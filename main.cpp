@@ -1,28 +1,44 @@
 #include <stdio.h>
 #include <math.h>
 
-typedef long double ld_t;
+#define SMALL_NUMBER 0.00000001
 
 int main(){
-	ld_t a;
-	ld_t b;
-	ld_t c;
+	double a = SNAN;
+	double b = SNAN;
+	double c = SNAN;
 	printf("enter coefficients of\nquadratic equation\n");
 	printf("a: ");
-	scanf("%Lf", &a);
+	scanf("%lf", &a);
 	printf("b: ");
-	scanf("%Lf", &b);
+	scanf("%lf", &b);
 	printf("c: ");
-	scanf("%Lf", &c);
+	scanf("%lf", &c);
 
-	ld_t d = b*b - 4.0*a*c;
-	if(d > 0.0){
-		printf("first root: %.3Lf\n", (-b + sqrt(d))/(2.0 * a));
-		printf("second root: %.3Lf\n", (-b - sqrt(d))/(2.0 * a));
-	} else if(d < 0.0){
-		printf("no roots\n");
-	} else {
-		printf("root: %.3Lf\n", (-b)/(2.0*a));
+
+	double d = b*b - 4.0*a*c;
+	if(isnan(a) || isnan(b) || isnan(c)){ // ошибка
+		printf("incorrect input!!!\n");
+	}else if(abs(a) < SMALL_NUMBER){ // линейное bx + c = 0
+		printf("bro thats not even quadratic\n");
+		if(abs(b) < SMALL_NUMBER){ // b == 0
+			if(abs(c) < SMALL_NUMBER){ // все вещ числа корни
+				printf("root: any real number\n");
+			}else{ // нет корней
+				printf("no roots\n");
+			}
+		}else{ // один корень
+			printf("root: %.3lf\n", (-c)/b);
+		}
+	}else{ // квадратное ax^2 + bx + c = 0
+		if(abs(d) < SMALL_NUMBER){ // один корень 
+			printf("root: %.3lf\n", (-b)/(2.0*a));
+		}else if(d > 0){ // два корня
+			printf("first root: %.3lf\n", (-b + sqrt(d))/(2.0 * a));
+			printf("second root: %.3lf\n", (-b - sqrt(d))/(2.0 * a));
+		}else if(d < 0){ // нет корней
+			printf("no roots\n");
+		}
 	}
 
 	return 0;
