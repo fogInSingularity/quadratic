@@ -1,73 +1,140 @@
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 
-#define SMALL_NUMBER 0.00000001
+static const double DELTA = 0.00000001;
+static const int INF_ROOTS = -1;
 
-void read_lf(double* n);
-void input_of_coeff(double* a, double* b, double* c);
+int input_of_coeff(double* a, double* b, double* c);
 int is_zero(double n);
-void linr(double b, double c);
-void quad(double a, double b, double c);
+int is_finite(double n);
+int linearSolver(double a, double b, double* x);
+int squareSolver(double a, double b, const double c, double* x1, double* x2);
 
 int main(){
-	double a = NAN;
-	double b = NAN;
-	double c = NAN;
+    double a = NAN;
+    double b = NAN;
+    double c = NAN;
 
-	input_of_coeff(&a, &b, &c);
+    if(input_of_coeff(&a, &b, &c) == EOF){
+        return 0;
+    }
 
-	if ( is_zero(a) ) { // линейное bx + c = 0
-		linr(b, c);
-	} else { // квадратное ax^2 + bx + c = 0
-		quad(a, b, c);
-	}
+    double x1 = NAN;
+    double x2 = NAN;
+    int nRoots = squareSolver(a, b, c, &x1, &x2);
 
-	return 0;
+    printf("this equation has:\n");
+    switch(nRoots) {
+        case INF_ROOTS:
+            printf("infinte number of roots\n");
+            break;
+        case 0:
+            printf("zero roots\n");
+            break;
+        case 1:
+            printf("one root: %lf\n", x1);
+            break;
+        case 2:
+            printf("two roots: %lf and %lf\n", x1, x2);
+            break;
+        default:
+            printf("something went wrong, unnown number of roots\n");
+            break;
+    }
+
+    return 0;
 }
 
-void read_lf(double* n) {
-	char ch = '\0';
-	while ( !scanf("%lf", n) ) {
-		scanf("%c", &ch);
-	}
-}
+// возвр EOF или 0 (всё ок)
+int input_of_coeff(double* a, double* b, double* c) {
+    assert(a != NULL);
+    assert(b != NULL);
+    assert(c != NULL);
+    assert(a != b);
+    assert(b != c);
+    assert(a != c);
 
-void input_of_coeff(double* a, double* b, double* c) {
-	printf("enter coefficients of\nquadratic equation\n");
-	printf("a: ");
-	read_lf(a);
-	printf("b: ");
-	read_lf(b);
-	printf("c: ");
-	read_lf(c);
+    printf("enter coefficients of\nquadratic equation in form a b c:\n");
+    int state = 4; // 4 потому что scanf возвр зн <= 3;
+    int flag = 1;
+    do {
+        state = scanf("%lf %lf %lf", a, b, c);
+        if(state == EOF) {
+            printf("end of file has been reached!\n");
+            return EOF;
+        } else if(state < 3) {
+            printf("try again\n");
+            int ch = 0;
+            while((ch = getchar()) != '\n')
+                ;
+        } else {
+            int ch = '\0';
+            while((ch = getchar()) == ' ')
+                ;
+            if(ch == '\n' || ch == EOF){
+                flag = 0;
+            } else {
+                printf("try again\n");
+                while((ch = getchar()) != '\n')
+                    ;
+            }
+        }
+    } while(state != 3 || flag);
+    return 0;
 }
 
 int is_zero(double n) {
-	return abs(n) < SMALL_NUMBER;
+    return abs(n) < DELTA;
 }
 
-void linr(double b, double c) {
-	printf("bro thats not even quadratic\n");
-	if ( is_zero(b) ) { // b == 0
-		if ( is_zero(c) ) { // все вещ числа корни
-			printf("root: any real number\n");
-		} else { // нет корней
-			printf("no roots\n");
-		}
-	} else { // один корень
-		printf("root: %.5lf\n", (-c)/b);
-	}
+int is_finite(double n) {
+    return (isnan(n) != 1) && (n > -INFINITY) && (n < INFINITY);
 }
 
-void quad(double a, double b, double c){
-	double d = b*b - 4.0*a*c;
-	double d_sqrt = sqrt(d);
-	if ( is_zero(d) ) { // один корень 
-		printf("root: %.5lf\n", (-b)/(2.0*a));
-	} else if ( d > 0.0 ) { // два корня
-		printf("first root: %.5lf\n", ( -b + d_sqrt ) / ( 2.0 * a ) );
-		printf("second root: %.5lf\n", ( -b - d_sqrt ) / ( 2.0 * a ) );
-	} else if ( d < 0.0 ) { // нет корней
-		printf ("no roots\n");
-	}
+// возвр число корней
+int linearSolver(double a, double b, double* x) {
+    assert(is_finite(a));
+    assert(is_finite(b));
+    assert(x != NULL);
+
+    if(is_zero(a)) {
+        return is_zero(b) ? INF_ROOTS : 0;
+    } else {
+        *x = (-b)/a;
+        *x = is_zero(*x) ? 0.0 : (*x);
+        return 1;
+    }
+}
+
+// возвр число корней 
+int squareSolver(double a, double b, const double c, double* x1, double* x2) {
+    assert(is_finite(a));
+    assert(is_finite(b));
+    assert(is_finite(c));
+    assert(x1 != NULL);
+    assert(x2 != NULL);
+    assert(x1 != x2);
+
+    if(is_zero(a)) {
+        return linearSolver(b, c, x1);
+        *x2 = NAN;
+    } else {
+        double d = b*b - 4.0*a*c;
+        if(is_zero(d)) {
+            *x1 = (-b)/(2.0*a);
+            *x1 = is_zero(*x1) ? 0.0 : (*x1);
+            *x2 = NAN;
+            return 1;
+        } else if(d > 0.0) {
+            double d_sqrt = sqrt(d);
+            *x1 = (-b + d_sqrt) / (2.0 * a);
+            *x1 = is_zero(*x1) ? 0.0 : (*x1);
+            *x2 = (-b - d_sqrt) / (2.0 * a);
+            *x2 = is_zero(*x2) ? 0.0 : (*x2);
+            return 2;
+        } else {
+            return 0;
+        }
+    }
 }
