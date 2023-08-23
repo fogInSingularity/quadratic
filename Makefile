@@ -1,8 +1,10 @@
 NAME_OF_SOURCE = main.cpp
 NAME_OF_EXE = quadratic
 OPT_LEVEL = -O0
+# -D _DEBUG для дебага иначе просто пробел
+COMP_MODE = -D _DEBUG
 all:
-	g++ $(NAME_OF_SOURCE) -o $(NAME_OF_EXE) -D _DEBUG -ggdb3 \
+	g++ $(NAME_OF_SOURCE) -o $(NAME_OF_EXE) $(COMP_MODE) -ggdb3 \
 	-std=c++17 $(OPT_LEVEL) -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
 	-Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual \
 	-Wchar-subscripts -Wconditionally-supported -Wconversion -Wctor-dtor-privacy \
