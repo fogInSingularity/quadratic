@@ -1,4 +1,4 @@
-NAME_OF_SOURCE = main.cpp squareSolver.cpp talkToUser.cpp utest.cpp utils.cpp
+NAME_OF_SOURCE = main.cpp squareSolver.cpp talkToUser.cpp utest.cpp utils.cpp defaultm.cpp help.cpp
 NAME_OF_EXE = quadratic
 OPT_LEVEL = -O0
 DEFINES = _DEBUG

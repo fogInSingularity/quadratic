@@ -6,34 +6,42 @@
 #include "talkToUser.h"
 #include "utils.h"
 #include "utest.h"
+#include "help.h"
+#include "defaultm.h"
+
+enum ProgramMode {
+    DEFAULT,
+    UNIT_TEST,
+    HELP_MESSAGE
+};
 
 int main(int argc, char* argv[]) {
-    int testOp = 0;
+    ProgramMode programMode = DEFAULT;
     for(int i = 1; i < argc; i++) {
         if(is_eql(argv[i], "--test")) {
-            testOp = 1;
+            programMode = UNIT_TEST;
+        }
+        if(is_eql(argv[i], "--help")) {
+            programMode = HELP_MESSAGE;
         }
     }
 
-    if(testOp) {
-        testAll();
-
-        return 0;
-    } else {
-        double a = NAN;
-        double b = NAN;
-        double c = NAN;
-
-        if(input_of_coeff(&a, &b, &c) == EOF) {
+    switch(programMode) {
+        case DEFAULT:
+            default_message();
             return 0;
-        }
-
-        double x1 = NAN;
-        double x2 = NAN;
-        NRoots nRoots = squareSolver(a, b, c, &x1, &x2);
-
-        outputBRoots(nRoots, x1, x2);
-
-        return 0;
+            break;
+        case UNIT_TEST:
+            testAll();
+            return 0;
+            break;
+        case HELP_MESSAGE:
+            printHelpM();
+            return 0;
+            break;
+        default:
+            printf("! unknown program mode\n");
+            return 0;
+            break;
     }
 }
