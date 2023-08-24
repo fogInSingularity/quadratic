@@ -32,7 +32,8 @@ int main(int argc, char* argv[]) {
             return 0;
             break;
         case UNIT_TEST:
-            testAll();
+            testAllSquareS();
+            testAllSwap();
             return 0;
             break;
         case HELP_MESSAGE:

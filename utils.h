@@ -53,8 +53,9 @@ bool is_finite(double n);
  *
  * @param a pointer to first variable
  * @param b pointer to seond variable
+ * @param size byte size of given variables
 */
-void swapf(void* a, void* b, int size);
+void swapf(void* a, void* b, size_t size);
 
 
 #endif // UTILS_H

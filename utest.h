@@ -2,8 +2,8 @@
 #define UTEST_H
 
 
-/// @brief definition of struct that holds all programmer entered variables
-struct Utest {
+/// @brief definition of struct that holds all programmer entered variables for square test
+struct SquareSTest {
     double a;         ///< coeff a
     double b;         ///< coeff b
     double c;         ///< coeff c
@@ -14,19 +14,41 @@ struct Utest {
 
 
 /**
- * @brief tests given Utest
+ * @brief tests given SquareStest
  *
- * @param utest struct that hold variables
+ * @param test struct that hold variables
  *
  * @return if test passed: true else: false
 */
-bool testOne(const Utest* utest);
+bool testOneSquareS(const SquareSTest* test);
 
 
 /**
- * @brief read test from tests.txt that ckecks them
+ * @brief read tests for squareSolver() from tests.txt that ckecks them
 */
-void testAll();
+void testAllSquareS();
+
+/// @brief definition of struct that holds all programmer entered variables for swap test
+struct SwapTest {
+    const char* str1;
+    const char* str2;
+};
+
+
+/**
+ * @brief tests given SwaoTest
+ *
+ * @param test struct that hold variables
+ *
+ * @return if test passed: true else: false
+*/
+bool testOneSwap(const SwapTest* test);
+
+
+/**
+ * @brief tests all defined tests of swap()
+*/
+void testAllSwap();
 
 
 #endif // UTEST_H
