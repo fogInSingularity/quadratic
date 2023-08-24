@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
+#include <getopt.h>
 
 #include "squareSolver.h"
 #include "talkToUser.h"
@@ -16,33 +17,38 @@ enum ProgramMode {
 };
 
 int main(int argc, char* argv[]) {
-    ProgramMode programMode = DEFAULT;
-    for(int i = 1; i < argc; i++) {
-        if(is_eql(argv[i], "--test")) {
-            programMode = UNIT_TEST;
-        }
-        if(is_eql(argv[i], "--help")) {
-            programMode = HELP_MESSAGE;
+    option opt[3];
+
+    opt[0] = {
+        "test",
+        0,
+        0,
+        UNIT_TEST
+    };
+    opt[1] = {
+        "help",
+        0,
+        0,
+        HELP_MESSAGE
+    };
+    // opt[2] = {0,0,0,0};
+
+    int opt_ch = 0;
+
+    while((opt_ch = getopt_long(argc, argv, "", opt, NULL)) != -1){
+        switch(opt_ch){
+            case UNIT_TEST:
+                testAllSquareS();
+                testAllSwap();
+                break;
+            case HELP_MESSAGE:
+                printHelpM();
+                break;
+            default:
+                break;
         }
     }
-
-    switch(programMode) {
-        case DEFAULT:
-            default_message();
-            return 0;
-            break;
-        case UNIT_TEST:
-            testAllSquareS();
-            testAllSwap();
-            return 0;
-            break;
-        case HELP_MESSAGE:
-            printHelpM();
-            return 0;
-            break;
-        default:
-            printf("! unknown program mode\n");
-            return 0;
-            break;
+    if(optind == 1){
+        default_message();
     }
 }
