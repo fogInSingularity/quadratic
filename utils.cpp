@@ -1,18 +1,9 @@
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
+#include <stdint.h>
 
 #include "utils.h"
-
-void swapf(double* a, double* b) {
-    assert(a != b);
-    assert(a == NULL);
-    assert(b == NULL);
-
-    double t = *a;
-               *a = *b;
-                    *b =  t;
-}
 
 bool is_eql(double a, double b) {
     return abs(a - b) < DELTA;
@@ -44,4 +35,38 @@ bool is_zero(double n) {
 
 bool is_finite(double n) {
     return (isnan(n) != true) && (n > -INFINITY) && (n < INFINITY);
+}
+
+void swapf(void* a, void* b, int size) {
+    assert(a != b);
+    assert(a != NULL);
+    assert(b != NULL);
+
+    int step = sizeof(uint64_t); // шаг
+    int bits_remained = size; // сколько байт осталось не обработано
+    for(int curnt_pos = 0; curnt_pos < size; curnt_pos += step) {
+        while(bits_remained < step) {
+            step >>= 1;
+        }
+        if(step == sizeof(uint64_t)) {
+            uint64_t temp = *(uint64_t*)((uint8_t*)a + curnt_pos);
+                            *(uint64_t*)((uint8_t*)a + curnt_pos) = *(uint64_t*)((uint8_t*)b + curnt_pos);
+                                                                    *(uint64_t*)((uint8_t*)b + curnt_pos) = temp;
+            bits_remained -= step;
+        } else if(step == sizeof(uint32_t)) {
+            uint32_t temp = *(uint32_t*)((uint8_t*)a + curnt_pos);
+                            *(uint32_t*)((uint8_t*)a + curnt_pos) = *(uint32_t*)((uint8_t*)b + curnt_pos);
+                                                                    *(uint32_t*)((uint8_t*)b + curnt_pos) = temp;
+            bits_remained -= step;
+        } else if(step == sizeof(uint16_t)) {
+            uint16_t temp = *(uint16_t*)((uint8_t*)a + curnt_pos);
+                            *(uint16_t*)((uint8_t*)a + curnt_pos) = *(uint16_t*)((uint8_t*)b + curnt_pos);
+                                                                    *(uint16_t*)((uint8_t*)b + curnt_pos) = temp;
+            bits_remained -= step;
+        } else {
+            uint8_t temp = *((uint8_t*)a + curnt_pos);
+                           *((uint8_t*)a + curnt_pos) = *((uint8_t*)b + curnt_pos);
+                                                        *((uint8_t*)b + curnt_pos) = temp;
+        }
+    }
 }

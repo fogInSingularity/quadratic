@@ -14,7 +14,7 @@ bool testOne(const Utest* utest) {
     int nRoots = squareSolver(utest->a, utest->b, utest->c, &x1, &x2);
 
     if(utest->x1ref > utest->x2ref)
-        swapf(&x1, &x2);
+        swapf(&x1, &x2, sizeof(x1));
 
     /**
      * left bit x1

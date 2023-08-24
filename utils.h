@@ -7,15 +7,6 @@ const double DELTA = 0.00000001;
 
 
 /**
- * @brief swaps two given variables
- *
- * @param a pointer to first variable
- * @param b pointer to seond variable
-*/
-void swapf(double* a, double* b);
-
-
-/**
  * @brief checks if two numbers are equal
  *
  * @param a first number
@@ -55,6 +46,15 @@ bool is_zero(double n);
  * @return if n is finite: true else: false
 */
 bool is_finite(double n);
+
+
+/**
+ * @brief swaps two given variables
+ *
+ * @param a pointer to first variable
+ * @param b pointer to seond variable
+*/
+void swapf(void* a, void* b, int size);
 
 
 #endif // UTILS_H
