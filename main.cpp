@@ -9,7 +9,6 @@
 #include "utest.h"
 #include "help.h"
 #include "defaultm.h"
-#include "color.h"
 
 enum ProgramMode {
     DEFAULT,
@@ -19,7 +18,6 @@ enum ProgramMode {
 };
 
 int main(int argc, char* argv[]) {
-    printf("test\n");
     option opt[3];
 
     opt[0] = {

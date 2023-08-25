@@ -27,25 +27,28 @@ FLAGS = -ggdb3 -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations
 all: quadratic
 
 quadratic: $(PATH_TO_OBJ)
-	g++ $(NAME_OF_OBJ)  -o $(NAME_OF_EXE) $(FLAGS)
+	g++ $(PATH_TO_OBJ)  -o $(NAME_OF_EXE) $(FLAGS)
+
+./objf/main.o: main.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) main.cpp -o ./objf/main.o
 
 ./objf/squareSolver.o: squareSolver.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) squareSolver.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) squareSolver.cpp -o ./objf/squareSolver.o
 
 ./objf/talkToUser.o: talkToUser.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) talkToUser.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) talkToUser.cpp -o ./objf/talkToUser.o
 
 ./objf/utest.o: utest.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) utest.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) utest.cpp -o ./objf/utest.o
 
 ./objf/utils.o: utils.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) utils.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) utils.cpp -o ./objf/utils.o
 
 ./objf/defaultm.o: defaultm.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) defaultm.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) defaultm.cpp -o ./objf/defaultm.o
 
 ./objf/help.o: help.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) help.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) help.cpp -o ./objf/help.o
 
 ./objf/color.o: color.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) color.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) color.cpp -o ./objf/color.o
