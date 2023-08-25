@@ -4,7 +4,7 @@
 
 #include "help.h"
 
-void printHelpM(){
+void PrintHelpM() {
     printf("\nThis utility helps solve quadratic\n"
            " equation based on given coefficients\n\n");
     printf("Usage:\n");

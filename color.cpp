@@ -1,27 +1,80 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include <assert.h>
 
 #include "color.h"
 
-// \x1b[1;34m мод с цветом 34
-// \x1b[0m выключение модов
-// printf("\x1b[1;34mHello\n\x1b[0m");
-void printc(const char str[], COLOR color, ...){
-    va_list args; // хранит инфу для функций
-    va_start(args, str); // даёт доступ к аргументам
+void TurnOnColor(Color color) {
+    printf("\x1b[0;%dm", color);
+}
 
-    printf("\x1b[1;%dm", color);
+void TurnOnStyle(Style style) {
+    printf("\x1b[%dm", style);
+}
 
-    // for(int i = 0; str[i] != 0;){
-    //     if(str[i] == '%'){
-    //         // форматный символ
-    //     }
-    // }
+void TurnOfStyle(Style style) {
+    switch (style) {
+        case BOLD:
+            printf("\x1b[22m");
+            break;
+        case DIM:
+            printf("\x1b[22m");
+            break;
+        case ITALIC:
+            printf("\x1b[23m");
+            break;
+        case UDERLINE:
+            printf("\x1b[24m");
+            break;
+        case BLINKING:
+            printf("\x1b[25m");
+            break;
+        case INVERSE:
+            printf("\x1b[27m");
+            break;
+        case HIDDEN:
+            printf("\x1b[28m");
+            break;
+        case STRIKETHROUGH:
+            printf("\x1b[29m");
+            break;
+        default:
+            assert(0 && "something went wrong with style");
+            break;
+    }
+}
 
-    printf("%s", str);
-
+void TurnOfAll() {
     printf("\x1b[0m");
+}
 
-
-    va_end(args); // закрывает доступ к аргументам
+void ShowAll() {
+    printf("\x1b[0;30mHello\n");
+    printf("\x1b[0;31mHello\n");
+    printf("\x1b[0;32mHello\n");
+    printf("\x1b[0;33mHello\n");
+    printf("\x1b[0;34mHello\n");
+    printf("\x1b[0;35mHello\n");
+    printf("\x1b[0;36mHello\n");
+    printf("\x1b[0;37mHello\n");
+    printf("\x1b[0;39mHello\n");
+    printf("\x1b[0m");
+    printf("\x1b[0;40mHello\n");
+    printf("\x1b[0;41mHello\n");
+    printf("\x1b[0;42mHello\n");
+    printf("\x1b[0;43mHello\n");
+    printf("\x1b[0;44mHello\n");
+    printf("\x1b[0;45mHello\n");
+    printf("\x1b[0;46mHello\n");
+    printf("\x1b[0;47mHello\n");
+    printf("\x1b[0;49mHello\n");
+    printf("\x1b[0m");
+    printf("\x1b[1mHello\x1b[0m\n");
+    printf("\x1b[2mHello\x1b[0m\n");
+    printf("\x1b[3mHello\x1b[0m\n");
+    printf("\x1b[4mHello\x1b[0m\n");
+    printf("\x1b[5mHello\x1b[0m\n");
+    printf("\x1b[7mHello\x1b[0m\n");
+    printf("\x1b[8mHello\x1b[0m\n");
+    printf("\x1b[9mHello\x1b[0m\n");
 }

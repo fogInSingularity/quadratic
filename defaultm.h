@@ -5,7 +5,7 @@
 /**
  * @brief standart mode to solve equation
 */
-void default_message();
+void DefaultMessage();
 
 
 #endif // DEFAULTM_H

@@ -20,13 +20,13 @@ struct SquareSTest {
  *
  * @return if test passed: true else: false
 */
-bool testOneSquareS(const SquareSTest* test);
+bool TestOneSquareS(const SquareSTest* test);
 
 
 /**
- * @brief read tests for squareSolver() from tests.txt that ckecks them
+ * @brief read tests for SquareSolver() from tests.txt that ckecks them
 */
-void testAllSquareS();
+void TestAllSquareS();
 
 /// @brief definition of struct that holds all programmer entered variables for swap test
 struct SwapTest {
@@ -42,13 +42,13 @@ struct SwapTest {
  *
  * @return if test passed: true else: false
 */
-bool testOneSwap(const SwapTest* test);
+bool TestOneSwap(const SwapTest* test);
 
 
 /**
  * @brief tests all defined tests of swap()
 */
-void testAllSwap();
+void TestAllSwap();
 
 
 #endif // UTEST_H

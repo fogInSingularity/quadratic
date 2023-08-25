@@ -20,7 +20,7 @@ enum NRoots {
  *
  * @return number of roots
 */
-NRoots linearSolver(double a, double b, double* x);
+NRoots LinearSolver(double a, double b, double* x);
 
 
 /**
@@ -34,7 +34,7 @@ NRoots linearSolver(double a, double b, double* x);
  *
  * @return number of roots
 */
-NRoots squareSolver(double a, double b, double c, double* x1, double* x2);
+NRoots SquareSolver(double a, double b, double c, double* x1, double* x2);
 
 
 #endif // SQUARE_SOLVER_H

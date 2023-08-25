@@ -7,8 +7,9 @@
 #include "utest.h"
 #include "utils.h"
 #include "talkToUser.h"
+#include "color.h"
 
-int input_of_coeff(double* a, double* b, double* c) {
+int InputOfCoeff(double* a, double* b, double* c) {
     assert(a != NULL);
     assert(b != NULL);
     assert(c != NULL);
@@ -17,35 +18,36 @@ int input_of_coeff(double* a, double* b, double* c) {
     assert(a != c);
 
     printf("enter coefficients of\nquadratic equation in form a b c:\n");
+
     int state = 4; // 4 потому что scanf возвр зн <= 3;
     int flag = true;
     do {
         state = scanf("%lf %lf %lf", a, b, c);
-        if(state == EOF) {
+        if (state == EOF) {
             printf("end of file has been reached!\n");
             return EOF;
-        } else if(state < 3) {
+        } else if (state < 3) {
             printf("try again\n");
-            drop_duf();
+            DropBuf();
         } else {
-            int onlySpaces = ignore_spaces();
-            if(onlySpaces == 1){
+            int onlySpaces = IgnoreSpaces();
+            if (onlySpaces == 1) {
                 flag = false;
-            } else if(onlySpaces == EOF) {
+            } else if (onlySpaces == EOF) {
                 printf("end of file has been reached!\n");
                 return EOF;
             } else {
-                printf("try again\n"); // f
-                drop_duf();
+                printf("try again\n");
+                DropBuf();
             }
         }
-    } while(state != 3 || flag);
+    } while (state != 3 || flag);
     return 0;
 }
 
-void outputBRoots(NRoots nRoots, double x1, double x2){
+void OutputRoots(NRoots nRoots, double x1, double x2) {
     printf("this equation has:\n");
-    switch(nRoots) {
+    switch (nRoots) {
         case INF_ROOTS:
             printf("infinte number of roots\n");
             break;
@@ -64,21 +66,21 @@ void outputBRoots(NRoots nRoots, double x1, double x2){
     }
 }
 
-void drop_duf() {
+void DropBuf() {
     int ch = 0;
 
     while((ch = getchar()) != '\n' && ch != EOF) {}
 }
 
-int ignore_spaces() {
+int IgnoreSpaces() {
     int ch = 0;
 
-    while((ch = getchar()) != '\n' && ch != EOF) {
+    while ((ch = getchar()) != '\n' && ch != EOF) {
         if (!isspace(ch))
             return 0;
     }
 
-    if(ch == EOF)
+    if (ch == EOF)
         return EOF;
 
     return 1;

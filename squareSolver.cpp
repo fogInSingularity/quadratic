@@ -5,55 +5,55 @@
 #include "utils.h"
 #include "squareSolver.h"
 
-NRoots linearSolver(double a, double b, double* x) {
-    assert(is_finite(a));
-    assert(is_finite(b));
+NRoots LinearSolver(double a, double b, double* x) {
+    assert(IsFinite(a));
+    assert(IsFinite(b));
     assert(x != NULL);
 
-    if(is_zero(a)) {
+    if (IsZero(a)) {
         *x = NAN;
-        return is_zero(b) ? NRoots::INF_ROOTS : NRoots::ZERO;
+        return IsZero(b) ? NRoots::INF_ROOTS : NRoots::ZERO;
     } else {
         *x = -b/a;
-        *x = is_zero(*x) ? 0.0 : (*x);
+        *x = IsZero(*x) ? 0.0 : (*x);
         return NRoots::ONE;
     }
 }
 
-NRoots squareSolver(double a, double b, double c, double* x1, double* x2) {
-    assert(is_finite(a));
-    assert(is_finite(b));
-    assert(is_finite(c));
+NRoots SquareSolver(double a, double b, double c, double* x1, double* x2) {
+    assert(IsFinite(a));
+    assert(IsFinite(b));
+    assert(IsFinite(c));
     assert(x1 != NULL);
     assert(x2 != NULL);
     assert(x1 != x2);
 
-    if(is_zero(a)) {
+    if (IsZero(a)) {
         *x2 = NAN;
 
-        return linearSolver(b, c, x1);
+        return LinearSolver(b, c, x1);
     } else {
         double d = b*b - 4.0*a*c;
-        if(is_zero(d)) {
+        if (IsZero(d)) {
             *x1 = (-b)/(2.0*a);
-            *x1 = is_zero(*x1) ? 0.0 : (*x1);
+            *x1 = IsZero(*x1) ? 0.0 : (*x1);
 
             *x2 = NAN;
 
             return NRoots::ONE;
-        } else if(d > 0.0) {
+        } else if (d > 0.0) {
             double d_sqrt = NAN;
-            if(is_zero(c)) {
+            if (IsZero(c)) {
                 d_sqrt = b;
             } else {
                 d_sqrt = sqrt(d);
             }
 
             *x1 = (-b - d_sqrt) / (2.0 * a);
-            *x1 = is_zero(*x1) ? 0.0 : (*x1);
+            *x1 = IsZero(*x1) ? 0.0 : (*x1);
 
             *x2 = (-b + d_sqrt) / (2.0 * a);
-            *x2 = is_zero(*x2) ? 0.0 : (*x2);
+            *x2 = IsZero(*x2) ? 0.0 : (*x2);
 
             return NRoots::TWO;
         } else {

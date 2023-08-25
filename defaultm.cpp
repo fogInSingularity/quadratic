@@ -6,17 +6,18 @@
 #include "talkToUser.h"
 #include "utils.h"
 #include "defaultm.h"
+#include "color.h"
 
-void default_message(){
+void DefaultMessage() {
     double a = NAN;
     double b = NAN;
     double c = NAN;
 
-    if(input_of_coeff(&a, &b, &c) != EOF) {
+    if (InputOfCoeff(&a, &b, &c) != EOF) {
         double x1 = NAN;
         double x2 = NAN;
-        NRoots nRoots = squareSolver(a, b, c, &x1, &x2);
+        NRoots nRoots = SquareSolver(a, b, c, &x1, &x2);
 
-        outputBRoots(nRoots, x1, x2);
+        OutputRoots(nRoots, x1, x2);
     }
 }

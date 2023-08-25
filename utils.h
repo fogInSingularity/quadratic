@@ -14,7 +14,7 @@ const double DELTA = 0.00000001;
  *
  * @return if a == b: true else: false
 */
-bool is_eql(double a, double b);
+bool IsEql(double a, double b);
 
 
 /**
@@ -25,7 +25,7 @@ bool is_eql(double a, double b);
  *
  * @return if a == b: true else: false
 */
-bool is_eql(const char a[],const char b[]);
+bool IsEql(const char a[],const char b[]);
 
 
 /**
@@ -35,7 +35,7 @@ bool is_eql(const char a[],const char b[]);
  *
  * @return if n == 0: true else: false
 */
-bool is_zero(double n);
+bool IsZero(double n);
 
 
 /**
@@ -45,7 +45,7 @@ bool is_zero(double n);
  *
  * @return if n is finite: true else: false
 */
-bool is_finite(double n);
+bool IsFinite(double n);
 
 
 /**
@@ -55,7 +55,7 @@ bool is_finite(double n);
  * @param b pointer to seond variable
  * @param size byte size of given variables
 */
-void swapf(void* a, void* b, size_t size);
+void SwapB(void* a, void* b, size_t size);
 
 
 #endif // UTILS_H

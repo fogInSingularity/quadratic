@@ -14,7 +14,7 @@
  *
  * @return if end of file had been reached: EOF else 0
 */
-int input_of_coeff(double* a, double* b, double* c);
+int InputOfCoeff(double* a, double* b, double* c);
 
 
 /**
@@ -24,7 +24,7 @@ int input_of_coeff(double* a, double* b, double* c);
  * @param x1 first root
  * @param x2 second root
 */
-void outputBRoots(NRoots nRoots, double x1, double x2);
+void OutputRoots(NRoots nRoots, double x1, double x2);
 
 
 /**
@@ -32,7 +32,7 @@ void outputBRoots(NRoots nRoots, double x1, double x2);
  *
  * @param ch pointer to char witch clears buffer
 */
-void drop_duf();
+void DropBuf();
 
 
 /**
@@ -42,7 +42,7 @@ void drop_duf();
  *
  * @return if buffer consisted only of spaces: 1 else if buffer ends with eof: eof else: 0
 */
-int ignore_spaces();
+int IgnoreSpaces();
 
 
 #endif // TALK_TO_USER

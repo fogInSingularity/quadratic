@@ -9,6 +9,7 @@
 #include "utest.h"
 #include "help.h"
 #include "defaultm.h"
+#include "color.h"
 
 enum ProgramMode {
     DEFAULT,
@@ -36,22 +37,22 @@ int main(int argc, char* argv[]) {
 
     int opt_ch = 0;
 
-    while((opt_ch = getopt_long(argc, argv, "", opt, NULL)) != -1){
-        switch(opt_ch){
+    while ((opt_ch = getopt_long(argc, argv, "", opt, NULL)) != -1) {
+        switch (opt_ch) {
             case UNIT_TEST:
-                testAllSquareS();
-                testAllSwap();
+                TestAllSquareS();
+                TestAllSwap();
                 break;
             case HELP_MESSAGE:
-                printHelpM();
+                PrintHelpM();
                 break;
             case UNKMOWN:
             default:
                 break;
         }
     }
-    if(optind == 1){
-        default_message();
+    if (optind == 1) {
+        DefaultMessage();
     }
 
     return 0;

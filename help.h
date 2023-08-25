@@ -5,7 +5,7 @@
 /**
  * @brief prints help information to user
 */
-void printHelpM();
+void PrintHelpM();
 
 
 #endif // HELP_H

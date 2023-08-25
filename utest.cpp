@@ -8,14 +8,14 @@
 #include "squareSolver.h"
 #include "utest.h"
 
-bool testOneSquareS(const SquareSTest* test) {
+bool TestOneSquareS(const SquareSTest* test) {
     double x1 = NAN;
     double x2 = NAN;
 
-    int nRoots = squareSolver(test->a, test->b, test->c, &x1, &x2);
+    int nRoots = SquareSolver(test->a, test->b, test->c, &x1, &x2);
 
-    if(test->x1ref > test->x2ref)
-        swapf(&x1, &x2, sizeof(x1));
+    if (test->x1ref > test->x2ref)
+        SwapB(&x1, &x2, sizeof(x1));
 
     /**
      * left bit x1
@@ -24,41 +24,40 @@ bool testOneSquareS(const SquareSTest* test) {
     */
     int flag = 0b000;
 
-    if(is_eql(x1, test->x1ref) != 1 || isnan(x1) != isnan(test->x1ref)) {
-        if(isnan(x1) != isnan(test->x1ref)) {
+    if (IsEql(x1, test->x1ref) != 1 || isnan(x1) != isnan(test->x1ref)) {
+        if (isnan(x1) != isnan(test->x1ref)) {
             flag |= 0b100;
         }
     }
 
-    if(is_eql(x2, test->x2ref) != 1 || isnan(x2) != isnan(test->x2ref)) {
-        if(isnan(x1) != isnan(test->x1ref)) {
+    if (IsEql(x2, test->x2ref) != 1 || isnan(x2) != isnan(test->x2ref)) {
+        if (isnan(x1) != isnan(test->x1ref)) {
             flag |= 0b010;
         }
     }
 
-    if(nRoots != test->nRootsRef)
+    if (nRoots != test->nRootsRef)
         flag |= 0b001;
 
-
-    if(flag == 0b000) {
+    if (flag == 0b000) {
         printf("# test passed\n");
         return true;
     } else {
         printf("! FAILED:\n");
-        if(flag & 0b100)
+        if (flag & 0b100)
             printf("# x1 calculated wrong\n"
                 "  x1 == %lf, x1ref == %lf\n", x1, test->x1ref);
-        if(flag & 0b010)
+        if (flag & 0b010)
             printf("# x2 calculated wrong\n"
                 "  x2 == %lf, x2ref == %lf\n", x2, test->x2ref);
-        if(flag & 0b001)
+        if (flag & 0b001)
             printf("# nRoots calcuated wrong\n"
                 "  nRoots == %d, nRootsRef == %d\n", nRoots, test->nRootsRef);
         return false;
     }
 }
 
-void testAllSquareS() {
+void TestAllSquareS() {
     FILE* file = NULL;
     file = fopen("tests.txt", "r");
     assert(file);
@@ -66,16 +65,16 @@ void testAllSquareS() {
     SquareSTest test = { NAN, NAN, NAN, NAN, NAN, NRoots::INF_ROOTS };
 
     printf("# testing solver...\n");
-    while(fscanf(file, "%lf %lf %lf %lf %lf %d", &(test.a), &(test.b), &(test.c),
+    while (fscanf(file, "%lf %lf %lf %lf %lf %d", &(test.a), &(test.b), &(test.c),
                                                  &(test.x1ref), &(test.x2ref),
                                                 (int*)(&(test.nRootsRef))) != EOF) {
-        testOneSquareS(&test);
+        TestOneSquareS(&test);
     }
 
     fclose(file);
 }
 
-bool testOneSwap(const SwapTest* test){
+bool TestOneSwap(const SwapTest* test) {
     char str1[101] = "";
     char str2[101] = "";
     char str1ref[101] = "";
@@ -87,26 +86,26 @@ bool testOneSwap(const SwapTest* test){
     strcpy(str2ref, test->str1);
 
     size_t size = 0;
-    while(str1[size] != '\0'){
+    while (str1[size] != '\0') {
         size++;
     }
 
-    swapf(str1, str2, size);
+    SwapB(str1, str2, size);
 
     /**
      * left bit str1
      * right bit str2
     */
     int flag = 0b00;
-    if(!is_eql(str1, str1ref)){
+    if (!IsEql(str1, str1ref)) {
         flag |= 0b10;
     }
 
-    if(!is_eql(str2, str2ref)){
+    if (!IsEql(str2, str2ref)) {
         flag |= 0b01;
     }
 
-    if(flag == 0){
+    if (flag == 0) {
         printf("# test passed\n");
         return true;
     } else {
@@ -125,7 +124,7 @@ bool testOneSwap(const SwapTest* test){
     }
 }
 
-void testAllSwap(){
+void TestAllSwap() {
     SwapTest testArr[20] = {
         {"a", "b"},
         {"ab", "cd"},
@@ -150,7 +149,7 @@ void testAllSwap(){
     };
     int nTest = 20;
     printf("# testing swap...\n");
-    for(int i = 0; i < nTest; i++){
-        testOneSwap(&testArr[i]);
+    for (int i = 0; i < nTest; i++) {
+        TestOneSwap(&testArr[i]);
     }
 }
