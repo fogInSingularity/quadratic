@@ -1,25 +1,51 @@
-NAME_OF_SOURCE = main.cpp squareSolver.cpp talkToUser.cpp utest.cpp utils.cpp defaultm.cpp help.cpp
+NAME_OF_SOURCE = main.cpp squareSolver.cpp talkToUser.cpp utest.cpp utils.cpp defaultm.cpp help.cpp color.cpp
+NAME_OF_OBJ = main.o squareSolver.o talkToUser.o utest.o utils.o defaultm.o help.o color.o
+PATH_TO_OBJ = ./objf/main.o ./objf/squareSolver.o ./objf/talkToUser.o ./objf/utest.o ./objf/utils.o ./objf/defaultm.o ./objf/help.o ./objf/color.o
 NAME_OF_EXE = quadratic
 OPT_LEVEL = -O0
 DEFINES = _DEBUG
-all:
-	g++ $(NAME_OF_SOURCE) -o $(NAME_OF_EXE) -D $(DEFINES) -ggdb3 \
-	-std=c++17 $(OPT_LEVEL) -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
-	-Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual \
-	-Wchar-subscripts -Wconditionally-supported -Wconversion -Wctor-dtor-privacy \
-	-Wempty-body -Wfloat-equal -Wformat-nonliteral -Wformat-security \
-	-Wformat-signedness -Wformat=2 -Winline -Wlogical-op -Wnon-virtual-dtor \
-	-Wopenmp-simd -Woverloaded-virtual -Wpacked -Wpointer-arith -Winit-self \
-	-Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo \
-	-Wstrict-null-sentinel -Wstrict-overflow=2 -Wsuggest-attribute=noreturn \
-	-Wsuggest-final-methods -Wsuggest-final-types -Wsuggest-override \
-	-Wswitch-default -Wswitch-enum -Wsync-nand -Wundef -Wunreachable-code \
-	-Wunused -Wuseless-cast -Wvariadic-macros -Wno-literal-suffix \
-	-Wno-missing-field-initializers -Wno-narrowing -Wno-old-style-cast \
-	-Wno-varargs -Wstack-protector -fcheck-new -fsized-deallocation \
-	-fstack-protector -fstrict-overflow -flto-odr-type-merging \
-	-fno-omit-frame-pointer -Wlarger-than=8192 -Wstack-usage=8192 -pie \
-	-fPIE -fsanitize=address,alignment,bool,bounds,enum,float-cast-overflow,\
-	float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,\
-	object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,\
-	undefined,unreachable,vla-bound,vptr
+FLAGS = -ggdb3 -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
+		-Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual \
+		-Wchar-subscripts -Wconditionally-supported -Wconversion -Wctor-dtor-privacy \
+		-Wempty-body -Wfloat-equal -Wformat-nonliteral -Wformat-security \
+		-Wformat-signedness -Wformat=2 -Winline -Wlogical-op -Wnon-virtual-dtor \
+		-Wopenmp-simd -Woverloaded-virtual -Wpacked -Wpointer-arith -Winit-self \
+		-Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo \
+		-Wstrict-null-sentinel -Wstrict-overflow=2 -Wsuggest-attribute=noreturn \
+		-Wsuggest-final-methods -Wsuggest-final-types -Wsuggest-override \
+		-Wswitch-default -Wswitch-enum -Wsync-nand -Wundef -Wunreachable-code \
+		-Wunused -Wuseless-cast -Wvariadic-macros -Wno-literal-suffix \
+		-Wno-missing-field-initializers -Wno-narrowing -Wno-old-style-cast \
+		-Wno-varargs -Wstack-protector -fcheck-new -fsized-deallocation \
+		-fstack-protector -fstrict-overflow -flto-odr-type-merging \
+		-fno-omit-frame-pointer -Wlarger-than=8192 -Wstack-usage=8192 \
+		-fsanitize=address,alignment,bool,bounds,enum,float-cast-overflow,$\
+		float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,$\
+		object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,$\
+		undefined,unreachable,vla-bound,vptr
+
+all: quadratic
+
+quadratic: $(PATH_TO_OBJ)
+	g++ $(NAME_OF_OBJ)  -o $(NAME_OF_EXE) $(FLAGS)
+
+./objf/squareSolver.o: squareSolver.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) squareSolver.cpp
+
+./objf/talkToUser.o: talkToUser.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) talkToUser.cpp
+
+./objf/utest.o: utest.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) utest.cpp
+
+./objf/utils.o: utils.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) utils.cpp
+
+./objf/defaultm.o: defaultm.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) defaultm.cpp
+
+./objf/help.o: help.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) help.cpp
+
+./objf/color.o: color.cpp
+	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) color.cpp

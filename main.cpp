@@ -9,26 +9,29 @@
 #include "utest.h"
 #include "help.h"
 #include "defaultm.h"
+#include "color.h"
 
 enum ProgramMode {
     DEFAULT,
     UNIT_TEST,
-    HELP_MESSAGE
+    HELP_MESSAGE,
+    UNKMOWN = '?'
 };
 
 int main(int argc, char* argv[]) {
+    printf("test\n");
     option opt[3];
 
     opt[0] = {
         "test",
-        0,
-        0,
+        no_argument,
+        NULL,
         UNIT_TEST
     };
     opt[1] = {
         "help",
-        0,
-        0,
+        no_argument,
+        NULL,
         HELP_MESSAGE
     };
     // opt[2] = {0,0,0,0};
@@ -44,6 +47,7 @@ int main(int argc, char* argv[]) {
             case HELP_MESSAGE:
                 printHelpM();
                 break;
+            case UNKMOWN:
             default:
                 break;
         }
@@ -51,4 +55,6 @@ int main(int argc, char* argv[]) {
     if(optind == 1){
         default_message();
     }
+
+    return 0;
 }
