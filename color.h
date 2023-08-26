@@ -46,15 +46,21 @@ void TurnOnStyle(Style style);
 
 
 /**
+ * @brief turns off color (sets to deafult)
+*/
+void TurnOffColor();
+
+
+/**
  * @brief turns off given style
 */
-void TurnOfStyle(Style style);
+void TurnOffStyle(Style style);
 
 
 /**
  * @brief turns off all color and style
 */
-void TurnOfAll();
+void TurnOffAll();
 
 
 /**

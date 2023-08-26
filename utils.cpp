@@ -7,7 +7,13 @@
 #include "utils.h"
 
 bool IsEql(double a, double b) {
-    return abs(a - b) < DELTA;
+    if (isnan(a) == 1 && isnan(b) == 1) {
+        return true;
+    } else if (isnan(a) + isnan(b) == 1) {
+        return false;
+    } else {
+        return abs(a - b) < DELTA;
+    }
 }
 
 bool IsEql(const char a[],const char b[]) {
@@ -31,14 +37,18 @@ bool IsEql(const char a[],const char b[]) {
 }
 
 bool IsZero(double n) {
-    return abs(n) < DELTA;
+    if (isnan(n)) {
+        return false;
+    } else {
+        return abs(n) < DELTA;
+    }
 }
 
 bool IsFinite(double n) {
     return (isnan(n) != true) && (n > -INFINITY) && (n < INFINITY);
 }
 
-void SwapB(void* a, void* b, size_t size) {
+void SwapBits(void* a, void* b, size_t size) {
     assert(a != b);
     assert(a != NULL);
     assert(b != NULL);

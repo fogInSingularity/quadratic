@@ -55,7 +55,7 @@ bool IsFinite(double n);
  * @param b pointer to seond variable
  * @param size byte size of given variables
 */
-void SwapB(void* a, void* b, size_t size);
+void SwapBits(void* a, void* b, size_t size);
 
 
 #endif // UTILS_H

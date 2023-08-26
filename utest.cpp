@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "squareSolver.h"
 #include "utest.h"
+#include "color.h"
 
 bool TestOneSquareS(const SquareSTest* test) {
     double x1 = NAN;
@@ -15,7 +16,7 @@ bool TestOneSquareS(const SquareSTest* test) {
     int nRoots = SquareSolver(test->a, test->b, test->c, &x1, &x2);
 
     if (test->x1ref > test->x2ref)
-        SwapB(&x1, &x2, sizeof(x1));
+        SwapBits(&x1, &x2, sizeof(x1));
 
     /**
      * left bit x1
@@ -24,35 +25,48 @@ bool TestOneSquareS(const SquareSTest* test) {
     */
     int flag = 0b000;
 
-    if (IsEql(x1, test->x1ref) != 1 || isnan(x1) != isnan(test->x1ref)) {
-        if (isnan(x1) != isnan(test->x1ref)) {
-            flag |= 0b100;
-        }
+    if (IsEql(x1, test->x1ref) != true || isnan(x1) != isnan(test->x1ref)) {
+        flag |= 0b100;
     }
 
     if (IsEql(x2, test->x2ref) != 1 || isnan(x2) != isnan(test->x2ref)) {
-        if (isnan(x1) != isnan(test->x1ref)) {
-            flag |= 0b010;
-        }
+        flag |= 0b010;
     }
 
     if (nRoots != test->nRootsRef)
         flag |= 0b001;
 
     if (flag == 0b000) {
+        TurnOnColor(Color::GREEN);
         printf("# test passed\n");
+        TurnOffAll();
+
         return true;
     } else {
+
+        TurnOnColor(Color::RED);
+        TurnOnStyle(Style::BOLD);
         printf("! FAILED:\n");
-        if (flag & 0b100)
-            printf("# x1 calculated wrong\n"
-                "  x1 == %lf, x1ref == %lf\n", x1, test->x1ref);
-        if (flag & 0b010)
-            printf("# x2 calculated wrong\n"
-                "  x2 == %lf, x2ref == %lf\n", x2, test->x2ref);
-        if (flag & 0b001)
-            printf("# nRoots calcuated wrong\n"
-                "  nRoots == %d, nRootsRef == %d\n", nRoots, test->nRootsRef);
+        TurnOffAll();
+
+        if (flag & 0b100) {
+            TurnOnColor(Color::RED);
+            printf("! x1 calculated wrong:\n"
+                   "!     x1 == %lf, x1ref == %lf\n", x1, test->x1ref);
+            TurnOffAll();
+        }
+        if (flag & 0b010) {
+            TurnOnColor(Color::RED);
+            printf("! x2 calculated wrong:\n"
+                   "!     x2 == %lf, x2ref == %lf\n", x2, test->x2ref);
+            TurnOffAll();
+        }
+        if (flag & 0b001) {
+            TurnOnColor(Color::RED);
+            printf("! nRoots calcuated wrong:\n"
+                   "!     nRoots == %d, nRootsRef == %d\n", nRoots, test->nRootsRef);
+            TurnOffAll();
+        }
         return false;
     }
 }
@@ -64,10 +78,13 @@ void TestAllSquareS() {
 
     SquareSTest test = { NAN, NAN, NAN, NAN, NAN, NRoots::INF_ROOTS };
 
+    TurnOnColor(Color::GREEN);
+    TurnOnStyle(Style::BOLD);
     printf("# testing solver...\n");
-    while (fscanf(file, "%lf %lf %lf %lf %lf %d", &(test.a), &(test.b), &(test.c),
+    TurnOffAll();
+    while (fscanf(file, "%lf %lf %lf %lf %lf %d",&(test.a), &(test.b), &(test.c),
                                                  &(test.x1ref), &(test.x2ref),
-                                                (int*)(&(test.nRootsRef))) != EOF) {
+                                                 (int*)(&(test.nRootsRef))) != EOF) {
         TestOneSquareS(&test);
     }
 
@@ -90,7 +107,7 @@ bool TestOneSwap(const SwapTest* test) {
         size++;
     }
 
-    SwapB(str1, str2, size);
+    SwapBits(str1, str2, size);
 
     /**
      * left bit str1
@@ -106,19 +123,27 @@ bool TestOneSwap(const SwapTest* test) {
     }
 
     if (flag == 0) {
+        TurnOnColor(Color::GREEN);
         printf("# test passed\n");
+        TurnOffAll();
         return true;
     } else {
+        TurnOnColor(Color::RED);
+        TurnOnStyle(Style::BOLD);
         printf("! FAILED:\n");
-        printf("! bytes swaped incorrectly\n");
+        TurnOffAll();
+
+        TurnOnColor(Color::RED);
+        printf("! bytes swaped incorrectly:\n");
         printf("! expected value for first variable:\n"
-               "!     %s", str1ref);
+               "!     %s\n", str1ref);
         printf("! received value for first variable:\n"
-               "!     %s", str1);
+               "!     %s\n", str1);
         printf("! expected value for first variable:\n"
-               "!     %s", str2ref);
+               "!     %s\n", str2ref);
         printf("! received value for first variable:\n"
-               "!     %s", str2);
+               "!     %s\n", str2);
+        TurnOffAll();
 
         return false;
     }
@@ -147,8 +172,14 @@ void TestAllSwap() {
         {"ivz90hksUAiYPiWaMU7ZiJD6PgMuFNdWmJxTYt4eojm5BzDTcjkpDfngs2Btw4f5v8PmJy9fuTsndBUvvL", "UZxxwVvg8darcXhhLfuGo2oRwjzEG3GkHp1M31PU6cMr8k6GvGrPJfd7iR3uND97kZmdXnXF3GmxuDi45x"},
         {"thF2mG5ztie4jhABsCAfFmUpMHyiwo7To3AWYiJKYcRsarLKohzieqrEVXkgExvGZGC6nDcVTCmHpBtNaEfXmov9QHssB7LVFLWa", "tisbTxcRvKspzf4U0MQEbtBqxhfEVVEgvqcbiEu3xnorghtRPQyHG9yN3nKQ3mxV0k2iVzjnTpZz7YE0AjDf4PmRQ7rEHBZbrPf8"}
     };
+
     int nTest = 20;
+
+    TurnOnColor(Color::GREEN);
+    TurnOnStyle(Style::BOLD);
     printf("# testing swap...\n");
+    TurnOffAll();
+
     for (int i = 0; i < nTest; i++) {
         TestOneSwap(&testArr[i]);
     }

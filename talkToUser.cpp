@@ -17,27 +17,45 @@ int InputOfCoeff(double* a, double* b, double* c) {
     assert(b != c);
     assert(a != c);
 
+    TurnOnColor(Color::YELLOW);
+    TurnOnStyle(Style::BOLD);
     printf("enter coefficients of\nquadratic equation in form a b c:\n");
+    TurnOffAll();
 
     int state = 4; // 4 потому что scanf возвр зн <= 3;
     int flag = true;
     do {
+        TurnOnColor(Color::GREEN);
+        TurnOnStyle(Style::BOLD);
         state = scanf("%lf %lf %lf", a, b, c);
+        TurnOffAll();
         if (state == EOF) {
+            TurnOnColor(Color::RED);
+            TurnOnStyle(Style::BOLD);
             printf("end of file has been reached!\n");
+            TurnOffAll();
             return EOF;
         } else if (state < 3) {
+            TurnOnColor(Color::RED);
+            TurnOnStyle(Style::BOLD);
             printf("try again\n");
+            TurnOffAll();
             DropBuf();
         } else {
             int onlySpaces = IgnoreSpaces();
             if (onlySpaces == 1) {
                 flag = false;
             } else if (onlySpaces == EOF) {
+                TurnOnColor(Color::RED);
+                TurnOnStyle(Style::BOLD);
                 printf("end of file has been reached!\n");
+                TurnOffAll();
                 return EOF;
             } else {
+                TurnOnColor(Color::RED);
+                TurnOnStyle(Style::BOLD);
                 printf("try again\n");
+                TurnOffAll();
                 DropBuf();
             }
         }
@@ -46,7 +64,13 @@ int InputOfCoeff(double* a, double* b, double* c) {
 }
 
 void OutputRoots(NRoots nRoots, double x1, double x2) {
+    TurnOnColor(Color::YELLOW);
+    TurnOnStyle(Style::BOLD);
     printf("this equation has:\n");
+    TurnOffAll();
+
+    TurnOnColor(Color::CYAN);
+    TurnOnStyle(Style::BOLD);
     switch (nRoots) {
         case INF_ROOTS:
             printf("infinte number of roots\n");
@@ -64,6 +88,7 @@ void OutputRoots(NRoots nRoots, double x1, double x2) {
             assert(0 && "something went wrong, unnown number of roots");
             break;
     }
+    TurnOffAll();
 }
 
 void DropBuf() {

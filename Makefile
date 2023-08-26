@@ -2,7 +2,7 @@ NAME_OF_SOURCE = main.cpp squareSolver.cpp talkToUser.cpp utest.cpp utils.cpp de
 NAME_OF_OBJ = main.o squareSolver.o talkToUser.o utest.o utils.o defaultm.o help.o color.o
 PATH_TO_OBJ = ./objFiles/main.o ./objFiles/squareSolver.o ./objFiles/talkToUser.o ./objFiles/utest.o ./objFiles/utils.o ./objFiles/defaultm.o ./objFiles/help.o ./objFiles/color.o
 NAME_OF_EXE = quadratic
-OPT_LEVEL = -Ofast
+OPT_LEVEL = -O0
 DEFINES = _DEBUG
 FLAGS = -ggdb3 -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
 		-Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual \

@@ -53,6 +53,7 @@ int main(int argc, char* argv[]) {
     }
     if (optind == 1) {
         DefaultMessage();
+        // ShowAll();
     }
 
     return 0;

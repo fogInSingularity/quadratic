@@ -12,7 +12,11 @@ void TurnOnStyle(Style style) {
     printf("\x1b[%dm", style);
 }
 
-void TurnOfStyle(Style style) {
+void TurnOffColor() {
+    printf("\x1b[;%dm", Color::DEFAULT_CLR);
+}
+
+void TurnOffStyle(Style style) {
     switch (style) {
         case BOLD:
             printf("\x1b[22m");
@@ -44,30 +48,30 @@ void TurnOfStyle(Style style) {
     }
 }
 
-void TurnOfAll() {
+void TurnOffAll() {
     printf("\x1b[0m");
 }
 
 void ShowAll() {
-    printf("\x1b[0;30mHello\n");
-    printf("\x1b[0;31mHello\n");
-    printf("\x1b[0;32mHello\n");
-    printf("\x1b[0;33mHello\n");
-    printf("\x1b[0;34mHello\n");
-    printf("\x1b[0;35mHello\n");
-    printf("\x1b[0;36mHello\n");
-    printf("\x1b[0;37mHello\n");
-    printf("\x1b[0;39mHello\n");
+    printf("\x1b[0;30mHello \x1b[1;30mHello\n");
+    printf("\x1b[0;31mHello \x1b[1;31mHello\n");
+    printf("\x1b[0;32mHello \x1b[1;32mHello\n");
+    printf("\x1b[0;33mHello \x1b[1;33mHello\n");
+    printf("\x1b[0;34mHello \x1b[1;34mHello\n");
+    printf("\x1b[0;35mHello \x1b[1;35mHello\n");
+    printf("\x1b[0;36mHello \x1b[1;36mHello\n");
+    printf("\x1b[0;37mHello \x1b[1;37mHello\n");
+    printf("\x1b[0;39mHello \x1b[1;39mHello\n");
     printf("\x1b[0m");
-    printf("\x1b[0;40mHello\n");
-    printf("\x1b[0;41mHello\n");
-    printf("\x1b[0;42mHello\n");
-    printf("\x1b[0;43mHello\n");
-    printf("\x1b[0;44mHello\n");
-    printf("\x1b[0;45mHello\n");
-    printf("\x1b[0;46mHello\n");
-    printf("\x1b[0;47mHello\n");
-    printf("\x1b[0;49mHello\n");
+    printf("\x1b[0;40mHello \n");
+    printf("\x1b[0;41mHello \n");
+    printf("\x1b[0;42mHello \n");
+    printf("\x1b[0;43mHello \n");
+    printf("\x1b[0;44mHello \n");
+    printf("\x1b[0;45mHello \n");
+    printf("\x1b[0;46mHello \n");
+    printf("\x1b[0;47mHello \n");
+    printf("\x1b[0;49mHello \n");
     printf("\x1b[0m");
     printf("\x1b[1mHello\x1b[0m\n");
     printf("\x1b[2mHello\x1b[0m\n");
