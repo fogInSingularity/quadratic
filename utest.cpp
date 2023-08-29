@@ -16,7 +16,7 @@ bool TestOneSquareS(const SquareSTest* test) {
     int nRoots = SquareSolver(test->a, test->b, test->c, &x1, &x2);
 
     if (test->x1ref > test->x2ref)
-        SwapBits(&x1, &x2, sizeof(x1));
+        SwapBytes(&x1, &x2, sizeof(x1));
 
     /**
      * left bit x1
@@ -37,51 +37,39 @@ bool TestOneSquareS(const SquareSTest* test) {
         flag |= 0b001;
 
     if (flag == 0b000) {
-        TurnOnColor(Color::GREEN);
         printf("# test passed\n");
-        TurnOffAll();
 
         return true;
     } else {
-
-        TurnOnColor(Color::RED);
-        TurnOnStyle(Style::BOLD);
         printf("! FAILED:\n");
-        TurnOffAll();
 
         if (flag & 0b100) {
-            TurnOnColor(Color::RED);
             printf("! x1 calculated wrong:\n"
                    "!     x1 == %lf, x1ref == %lf\n", x1, test->x1ref);
-            TurnOffAll();
         }
         if (flag & 0b010) {
-            TurnOnColor(Color::RED);
             printf("! x2 calculated wrong:\n"
                    "!     x2 == %lf, x2ref == %lf\n", x2, test->x2ref);
-            TurnOffAll();
         }
         if (flag & 0b001) {
-            TurnOnColor(Color::RED);
             printf("! nRoots calcuated wrong:\n"
                    "!     nRoots == %d, nRootsRef == %d\n", nRoots, test->nRootsRef);
-            TurnOffAll();
         }
         return false;
     }
 }
 
 void TestAllSquareS() {
+    const char* fileName = "tests.txt";
     FILE* file = NULL;
-    file = fopen("tests.txt", "r");
+    file = fopen(fileName, "r");
     assert(file);
+
+    FDropBuf(file);
 
     SquareSTest test = { NAN, NAN, NAN, NAN, NAN, NRoots::INF_ROOTS };
 
-    TurnOnColor(Color::GREEN);
-    TurnOnStyle(Style::BOLD);
     printf("# testing solver...\n");
-    TurnOffAll();
     while (fscanf(file, "%lf %lf %lf %lf %lf %d",&(test.a), &(test.b), &(test.c),
                                                  &(test.x1ref), &(test.x2ref),
                                                  (int*)(&(test.nRootsRef))) != EOF) {
@@ -107,7 +95,7 @@ bool TestOneSwap(const SwapTest* test) {
         size++;
     }
 
-    SwapBits(str1, str2, size);
+    SwapBytes(str1, str2, size);
 
     /**
      * left bit str1
@@ -123,17 +111,11 @@ bool TestOneSwap(const SwapTest* test) {
     }
 
     if (flag == 0) {
-        TurnOnColor(Color::GREEN);
         printf("# test passed\n");
-        TurnOffAll();
         return true;
     } else {
-        TurnOnColor(Color::RED);
-        TurnOnStyle(Style::BOLD);
         printf("! FAILED:\n");
-        TurnOffAll();
 
-        TurnOnColor(Color::RED);
         printf("! bytes swaped incorrectly:\n");
         printf("! expected value for first variable:\n"
                "!     %s\n", str1ref);
@@ -143,7 +125,6 @@ bool TestOneSwap(const SwapTest* test) {
                "!     %s\n", str2ref);
         printf("! received value for first variable:\n"
                "!     %s\n", str2);
-        TurnOffAll();
 
         return false;
     }
@@ -175,10 +156,7 @@ void TestAllSwap() {
 
     int nTest = 20;
 
-    TurnOnColor(Color::GREEN);
-    TurnOnStyle(Style::BOLD);
     printf("# testing swap...\n");
-    TurnOffAll();
 
     for (int i = 0; i < nTest; i++) {
         TestOneSwap(&testArr[i]);

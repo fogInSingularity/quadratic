@@ -1,6 +1,7 @@
-2 0  0    0 NAN  1
-1 0 -1   -1   1  2
-1 2  1   -1 NAN  1
-1 0 -1   -1   1  2
-1 2  3  NAN NAN  0
-0 0  0  NAN NAN -1
+# a  b  c  x1ref x2ref nRoots
+  2  0  0      0   NAN      1
+  1  0 -1     -1     1      2
+  1  2  1     -1   NAN      1
+  1  0 -1     -1     1      2
+  1  2  3    NAN   NAN      0
+  0  0  0    NAN   NAN     -1

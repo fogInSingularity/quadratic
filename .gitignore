@@ -3,3 +3,4 @@ quadratic
 html/
 .vscode/
 objFiles/
+build/

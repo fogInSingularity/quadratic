@@ -17,23 +17,20 @@ bool IsEql(double a, double b) {
 }
 
 bool IsEql(const char a[],const char b[]) {
-    int size_a = 0;
-    int size_b = 0;
-    while (a[size_a] != '\0')
-        size_a++;
-    while (b[size_b] != '\0')
-        size_b++;
-    if (size_a != size_b)
-        return false;
-
-    int i = 0;
-    int j = 0;
-    for (; a[i] != '\0' && b[i] != '\0'; i++) {
-        if (a[i] == b[i])
-            j++;
+    const char* aMove = a;
+    const char* bMove = b;
+    while (*aMove != '\0' || *bMove != '\0') {
+        if (*aMove != *bMove) {
+            return false;
+        }
+        aMove++;
+        bMove++;
     }
-
-    return (i == j) ? true : false;
+    if (*aMove != *bMove) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 bool IsZero(double n) {
@@ -48,7 +45,7 @@ bool IsFinite(double n) {
     return (isnan(n) != true) && (n > -INFINITY) && (n < INFINITY);
 }
 
-void SwapBits(void* a, void* b, size_t size) {
+void SwapBytes(void* a, void* b, size_t size) {
     assert(a != b);
     assert(a != NULL);
     assert(b != NULL);
@@ -89,4 +86,35 @@ void SwapBits(void* a, void* b, size_t size) {
                memcpy(aMove, bMove, sizeof(uint8_t));
                       memcpy(bMove, &temp, sizeof(uint8_t));
     }
+}
+
+void DropBuf() {
+    int ch = 0;
+
+    while ((ch = getchar()) != '\n' && ch != EOF) {}
+}
+
+void FDropBuf(FILE* file) {
+    assert(file != NULL);
+    int ch = 0;
+
+    while ((ch = fgetc(file)) != '\n' && ch != EOF) {}
+}
+
+int IgnoreSpaces() {
+    int ch = 0;
+
+    while ((ch = getchar()) != '\n' && ch != EOF) {
+        if (!IsSpace((char)ch))
+            return 0;
+    }
+
+    if (ch == EOF)
+        return EOF;
+
+    return 1;
+}
+
+bool IsSpace(const char ch) {
+    return ch == ' ' ? true : false;
 }

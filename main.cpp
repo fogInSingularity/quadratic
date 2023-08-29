@@ -1,60 +1,61 @@
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
-#include <getopt.h>
+#include <string.h>
 
-#include "squareSolver.h"
-#include "talkToUser.h"
-#include "utils.h"
+#include "programModes.h"
 #include "utest.h"
-#include "help.h"
-#include "defaultm.h"
+#include "talkToUser.h"
+#include "squareSolver.h"
+#include "utils.h"
 #include "color.h"
+#include "getopt.h"
 
 enum ProgramMode {
     DEFAULT,
-    UNIT_TEST,
-    HELP_MESSAGE,
-    UNKMOWN = '?'
+    TEST,
+    HELP,
 };
 
 int main(int argc, char* argv[]) {
-    option opt[3];
+    // Option option[] = {{"test", 't', NULL, false, 0, NULL},
+    //                     {NULL, '\0', NULL, false, 0, NULL}};
+    // Getopt(argc, argv, option);
 
-    opt[0] = {
-        "test",
-        no_argument,
-        NULL,
-        UNIT_TEST
-    };
-    opt[1] = {
-        "help",
-        no_argument,
-        NULL,
-        HELP_MESSAGE
-    };
-    // opt[2] = {0,0,0,0};
+    // for(size_t i = 0; i < option->nArgs; i++) {
+    //     printf("%s\n", (option->data)[i]);
+    // }
 
-    int opt_ch = 0;
-
-    while ((opt_ch = getopt_long(argc, argv, "", opt, NULL)) != -1) {
-        switch (opt_ch) {
-            case UNIT_TEST:
-                TestAllSquareS();
-                TestAllSwap();
-                break;
-            case HELP_MESSAGE:
-                PrintHelpM();
-                break;
-            case UNKMOWN:
-            default:
-                break;
+    ProgramMode mode = DEFAULT;
+    for (int i = 1; i < argc; i++) {
+        if (IsEql(argv[i], "--test")) {
+            mode = TEST;
+            break;
+        } else if (IsEql(argv[i], "--help")) {
+            mode = HELP;
+            break;
         }
     }
-    if (optind == 1) {
-        DefaultMessage();
-        // ShowAll();
+
+    switch(mode){
+        case DEFAULT:
+            Default();
+            break;
+        case TEST:
+            TestAllSquareS();
+            TestAllSwap();
+            break;
+        case HELP:
+            Help();
+            break;
+        default:
+            assert(0 && "unknown mode");
     }
+
+    // for (size_t i = 0; i < option->nArgs; i++) {
+    //     free(option->data[i]);
+    // }
+    // free(option->data);
 
     return 0;
 }

@@ -1,6 +1,7 @@
-#ifndef UTEST_H
-#define UTEST_H
+#ifndef TEST_H
+#define TEST_H
 
+#include"squareSolver.h"
 
 /// @brief definition of struct that holds all programmer entered variables for square test
 struct SquareSTest {
@@ -51,4 +52,4 @@ bool TestOneSwap(const SwapTest* test);
 void TestAllSwap();
 
 
-#endif // UTEST_H
+#endif // TEST_H

@@ -55,7 +55,39 @@ bool IsFinite(double n);
  * @param b pointer to seond variable
  * @param size byte size of given variables
 */
-void SwapBits(void* a, void* b, size_t size);
+void SwapBytes(void* a, void* b, size_t size);
+
+
+/**
+ * @brief drops input buffer
+*/
+void DropBuf();
+
+
+/**
+ * @brief skips input streem until \n or EOF had been reached
+ *
+ * @param file file that surves as a stream
+*/
+void FDropBuf(FILE* file);
+
+
+/**
+ * @brief ignores spaces in input buffer
+ *
+ * @return if buffer consisted only of spaces: 1 else if buffer ends with eof: eof else: 0
+*/
+int IgnoreSpaces();
+
+
+/**
+ * @brief chechs is given char is space
+ *
+ * @param ch char to check
+ *
+ * @return if ch is space: true else: false
+*/
+bool IsSpace(const char ch);
 
 
 #endif // UTILS_H

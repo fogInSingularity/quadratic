@@ -27,22 +27,4 @@ int InputOfCoeff(double* a, double* b, double* c);
 void OutputRoots(NRoots nRoots, double x1, double x2);
 
 
-/**
- * @brief drops input buffer
- *
- * @param ch pointer to char witch clears buffer
-*/
-void DropBuf();
-
-
-/**
- * @brief ignores spaces in input buffer
- *
- * @param ch pointer to char witch clears spaces
- *
- * @return if buffer consisted only of spaces: 1 else if buffer ends with eof: eof else: 0
-*/
-int IgnoreSpaces();
-
-
 #endif // TALK_TO_USER

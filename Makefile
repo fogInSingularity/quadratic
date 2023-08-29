@@ -1,9 +1,12 @@
-NAME_OF_SOURCE = main.cpp squareSolver.cpp talkToUser.cpp utest.cpp utils.cpp defaultm.cpp help.cpp color.cpp
-NAME_OF_OBJ = main.o squareSolver.o talkToUser.o utest.o utils.o defaultm.o help.o color.o
-PATH_TO_OBJ = ./objFiles/main.o ./objFiles/squareSolver.o ./objFiles/talkToUser.o ./objFiles/utest.o ./objFiles/utils.o ./objFiles/defaultm.o ./objFiles/help.o ./objFiles/color.o
-NAME_OF_EXE = quadratic
+CC = g++
+EXE = quadratic
+BUILD_DIR = build
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(foreach src,$(SOURCES),./$(BUILD_DIR)/$(src:.cpp=.o))
+DEPS = $(foreach src,$(wildcard *.h),./$(BUILD_DIR)/$(src:.h=.d))
 OPT_LEVEL = -O0
 DEFINES = _DEBUG
+DOPFLAGS = -MMD -MP
 FLAGS = -ggdb3 -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
 		-Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual \
 		-Wchar-subscripts -Wconditionally-supported -Wconversion -Wctor-dtor-privacy \
@@ -24,31 +27,18 @@ FLAGS = -ggdb3 -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations
 		object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,$\
 		undefined,unreachable,vla-bound,vptr
 
-all: quadratic
+all: $(EXE)
 
-quadratic: $(PATH_TO_OBJ)
-	g++ $(PATH_TO_OBJ)  -o $(NAME_OF_EXE) $(FLAGS)
+$(EXE): $(OBJECTS)
+	$(CC) $(OBJECTS) $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) -o $(EXE)
 
-./objFiles/main.o: main.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) main.cpp -o ./objFiles/main.o
+./$(BUILD_DIR)/%.o: %.cpp
+	$(CC) $^ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) -o $@
 
-./objFiles/squareSolver.o: squareSolver.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) squareSolver.cpp -o ./objFiles/squareSolver.o
+clean:
+	rm $(BUILD_DIR)/*
 
-./objFiles/talkToUser.o: talkToUser.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) talkToUser.cpp -o ./objFiles/talkToUser.o
+doxygen:
+	doxygen Doxyfile
 
-./objFiles/utest.o: utest.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) utest.cpp -o ./objFiles/utest.o
-
-./objFiles/utils.o: utils.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) utils.cpp -o ./objFiles/utils.o
-
-./objFiles/defaultm.o: defaultm.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) defaultm.cpp -o ./objFiles/defaultm.o
-
-./objFiles/help.o: help.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) help.cpp -o ./objFiles/help.o
-
-./objFiles/color.o: color.cpp
-	g++ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) color.cpp -o ./objFiles/color.o
+# -include $(DEPS)
