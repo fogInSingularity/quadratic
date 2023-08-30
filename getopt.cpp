@@ -6,7 +6,6 @@
 #include "getopt.h"
 #include "utils.h"
 
-
 void Getopt(int argc, const char** argv, Option* options) {
     for (; argc > 0; argc--, argv++) {
         const char* opts = *argv;
@@ -30,23 +29,9 @@ void ParseLong(const char* opts, Option* option) {
     assert(option != NULL);
 
     opts += 2; // skip --
-    const char* beginOpt = opts;
-    // const char* endOpt = opts;
-    // while (*endOpt != '=' && *endOpt != '\0') {
-    //     endOpt++;
-    // }
 
+    // const char* beginOpt = opts;
     const char* endOpt = strchr(opts, '=');
-
-    // for (; !Stop(option); option++) {
-    //     if (IsEql(beginOpt, endOpt, option->longName)) {
-    //         option->seen = true;
-    //         break;
-    //     }
-    // }
-    // if (Stop(option)) {
-    //     return;
-    // }
 
     while (1) {
         if (Stop(option)) {
@@ -68,14 +53,6 @@ void ParseLong(const char* opts, Option* option) {
 
     opts = endOpt;
 
-    // opts = endOpt; // skip name
-    // printf("opts: %s\n", opts);
-    // printf("point\n");
-    // if (*opts != '=') {
-    //     option->nArgs = 0;
-    //     return;
-    // }
-
     ParseArgs(option, opts);
 }
 
@@ -84,16 +61,6 @@ void ParseShort(const char* opts, Option* option) {
     assert(option != NULL);
 
     opts++; // skip -
-
-    // for (; !Stop(option); option++) {
-    //     if (option->shortName == *opts) {
-    //         option->seen = true;
-    //         break;
-    //     }
-    // }
-    // if (Stop(option)) {
-    //     return;
-    // }
 
     while (1) {
         if (Stop(option)) {
@@ -140,24 +107,24 @@ void Strcpy(char* dest,const  char* begin,const char* end) { // копирует
     *dest = '\0';
 }
 
-bool IsEql(const char* begin, const char* end, const char* str) { // [begin, end)
-    assert(begin != NULL);
-    assert(end   != NULL);
-    assert(str   != NULL);
+// bool IsEql(const char* begin, const char* end, const char* str) { // [begin, end)
+//     assert(begin != NULL);
+//     assert(end   != NULL);
+//     assert(str   != NULL);
 
-    while (begin != end) {
-        if (*begin != *str) {
-            return false;
-        }
-        str++;
-        begin++;
-    }
-    if (*str != '\0') {
-        return false;
-    } else {
-        return true;
-    }
-}
+//     while (begin != end) {
+//         if (*begin != *str) {
+//             return false;
+//         }
+//         str++;
+//         begin++;
+//     }
+//     if (*str != '\0') {
+//         return false;
+//     } else {
+//         return true;
+//     }
+// }
 
 void FreeOpt(Option* option) {
     for (int i = 0; !Stop(option+i); i++) {
@@ -183,12 +150,12 @@ void PrintOpt(Option* option) {
     }
 }
 
-void ParseArgs(Option* option, const char* pos) {
+void ParseArgs(Option* option, const char* pos) { //  передавать указатель на =
     pos++; // skip =
     (option->nArgs)++;
 
-    for (const char* tmpptr = pos; *tmpptr != '\0'; tmpptr++) {
-        if (*tmpptr == ',') {
+    for (const char* cntComma = pos; *cntComma != '\0'; cntComma++) {
+        if (*cntComma == ',') {
             (option->nArgs)++;
         }
     }
@@ -196,22 +163,28 @@ void ParseArgs(Option* option, const char* pos) {
     option->data = (char**)calloc(option->nArgs, sizeof(option->data[0]));
 
     char** dataRef = option->data;
-    while (*pos != '\0') {
-        const char* tmpptr = pos;
-        while (*tmpptr != ',' && *tmpptr != '\0') {
-            tmpptr++;
-        }
+    const char* term = strchr(pos, '\0');
 
-        size_t size = (size_t)(tmpptr - pos + 1); // длинна аргумента + \0
+    while (*pos != '\0') {
+        // const char* tmpptr = pos;
+        // while (*tmpptr != ',' && *tmpptr != '\0') {
+        //     tmpptr++;
+        // }
+
+        const char* comma = strchr(pos, ',');
+
+        const char* jump = (comma != NULL) ? comma : term;
+
+        size_t size = (size_t)(jump - pos + 1); // длинна аргумента + \0
         *dataRef = (char*)calloc(size, sizeof((*dataRef)[0]));
 
-        Strcpy(*dataRef, pos, tmpptr);
+        Strcpy(*dataRef, pos, jump);
         dataRef++;
 
-        if (*tmpptr == '\0') {
+        if (*jump == '\0') {
             break;
         } else {
-            pos = tmpptr + 1;
+            pos = jump + 1;
         }
     }
 }

@@ -27,7 +27,7 @@ bool Stop(Option* option);
 void Strcpy(char* dest, const char* begin, const char* end);
 
 
-bool IsEql(const char* begin, const char* end, const char* str);
+// bool IsEql(const char* begin, const char* end, const char* str);
 
 
 void FreeOpt(Option* option);
