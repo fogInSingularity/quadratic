@@ -11,51 +11,47 @@
 #include "color.h"
 #include "getopt.h"
 
-enum ProgramMode {
-    DEFAULT,
-    TEST,
-    HELP,
+/// @brief enum for holding program mode
+enum OptinonsMap {
+    HELP_M  = 0, ///< print help message
+    CLI_M   = 1, ///< use command line options as input source
+    FILE_M  = 2, ///< use file as input source
+    STDIN_M = 3, ///< use stdin as input source
 };
 
-int main(int argc, char* argv[]) {
-    // Option option[] = {{"test", 't', NULL, false, 0, NULL},
-    //                     {NULL, '\0', NULL, false, 0, NULL}};
-    // Getopt(argc, argv, option);
+int main(int argc,const char**  argv) {
+#ifdef _DEBUG
+    TestAllSquareS();
+    TestAllSwap();
+#else
+    Option optArr[] = {{"help"        , 'h' , &Help        , false, 0, NULL},
+                       {"command-line", 'c' , &DefaultCli  , false, 0, NULL},
+                       {"file"        , 'f' , &DefaultFile , false, 0, NULL},
+                       {"stdin"       , 's' , &DefaultStdio, false, 0, NULL},
+                       {NULL          , '\0', NULL         , false, 0, NULL}}; // stop option
 
-    // for(size_t i = 0; i < option->nArgs; i++) {
-    //     printf("%s\n", (option->data)[i]);
-    // }
+    Getopt(argc, argv, optArr);
 
-    ProgramMode mode = DEFAULT;
-    for (int i = 1; i < argc; i++) {
-        if (IsEql(argv[i], "--test")) {
-            mode = TEST;
-            break;
-        } else if (IsEql(argv[i], "--help")) {
-            mode = HELP;
-            break;
-        }
+    void (*funcToExec)(Option*) = NULL;
+
+    if (optArr[HELP_M].seen) {
+        funcToExec = optArr[HELP_M].func;
+    } else if (optArr[STDIN_M].seen) {
+        funcToExec = optArr[STDIN_M].func;
+    } else if (optArr[CLI_M].seen) {
+        funcToExec = optArr[CLI_M].func;
+    } else if (optArr[FILE_M].seen) {
+        funcToExec = optArr[FILE_M].func;
     }
 
-    switch(mode){
-        case DEFAULT:
-            Default();
-            break;
-        case TEST:
-            TestAllSquareS();
-            TestAllSwap();
-            break;
-        case HELP:
-            Help();
-            break;
-        default:
-            assert(0 && "unknown mode");
+    if (funcToExec != NULL) {
+        (*funcToExec)(optArr);
+    } else {
+        printf("use ./quadratic --help\n");
     }
 
-    // for (size_t i = 0; i < option->nArgs; i++) {
-    //     free(option->data[i]);
-    // }
-    // free(option->data);
+    FreeOpt(optArr);
+#endif // _DEBUG
 
     return 0;
 }

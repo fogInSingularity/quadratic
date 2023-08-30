@@ -5,7 +5,7 @@ SOURCES = $(wildcard *.cpp)
 OBJECTS = $(foreach src,$(SOURCES),./$(BUILD_DIR)/$(src:.cpp=.o))
 DEPS = $(foreach src,$(wildcard *.h),./$(BUILD_DIR)/$(src:.h=.d))
 OPT_LEVEL = -O0
-DEFINES = _DEBUG
+DEFINES = NOTHING
 DOPFLAGS = -MMD -MP
 FLAGS = -ggdb3 -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
 		-Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual \

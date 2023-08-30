@@ -6,9 +6,10 @@
 #include "getopt.h"
 #include "utils.h"
 
-void Getopt(int argc, char** argv, Option* options) {
-    for (;argc > 0; argc--, argv++) {
-        char* opts = *argv;
+
+void Getopt(int argc, const char** argv, Option* options) {
+    for (; argc > 0; argc--, argv++) {
+        const char* opts = *argv;
         if (strlen(opts)  < 2 || opts[0] != '-') {
             continue;
         }
@@ -16,6 +17,9 @@ void Getopt(int argc, char** argv, Option* options) {
         if (opts[1] == '-') {
             ParseLong(opts, options);
         } else {
+            if (opts[2] != '=' && opts[2] != '\0') {
+                continue;
+            }
             ParseShort(opts, options);
         }
     }
@@ -27,58 +31,52 @@ void ParseLong(const char* opts, Option* option) {
 
     opts += 2; // skip --
     const char* beginOpt = opts;
-    const char* endOpt = opts;
-    while (*endOpt != '=' && *endOpt != '\0') {
-        endOpt++;
-    }
+    // const char* endOpt = opts;
+    // while (*endOpt != '=' && *endOpt != '\0') {
+    //     endOpt++;
+    // }
 
-    for (; Stop(option); option++) {
-        if (IsEql(beginOpt, endOpt, option->longName)) {
+    const char* endOpt = strchr(opts, '=');
+
+    // for (; !Stop(option); option++) {
+    //     if (IsEql(beginOpt, endOpt, option->longName)) {
+    //         option->seen = true;
+    //         break;
+    //     }
+    // }
+    // if (Stop(option)) {
+    //     return;
+    // }
+
+    while (1) {
+        if (Stop(option)) {
+            return;
+        }
+                                            // (size_t)(endOpt - beginOpt)
+        if (strncmp(opts, option->longName, strlen(option->longName)) == 0) {
             option->seen = true;
             break;
-        }
-    }
-    if (Stop(option)) {
-        return;
+        };
+
+        option++;
     }
 
-    opts = endOpt; // skip name
-
-    if (*opts != '=') {
+    if (endOpt == NULL) {
         option->nArgs = 0;
-        option->data = NULL;
         return;
     }
-    opts++; // skip =
-    (option->nArgs)++;
 
-    for (const char* tmpptr = opts; *tmpptr != '\0'; tmpptr++) {
-        if (*tmpptr == ',') {
-            (option->nArgs)++;
-        }
-    }
+    opts = endOpt;
 
-    (option->data) = (char**)calloc(option->nArgs, sizeof(char**));
+    // opts = endOpt; // skip name
+    // printf("opts: %s\n", opts);
+    // printf("point\n");
+    // if (*opts != '=') {
+    //     option->nArgs = 0;
+    //     return;
+    // }
 
-    char** dataRef = option->data;
-    while (*opts != '\0') {
-        const char* tmpptr = opts;
-        while (*tmpptr != ',' && *tmpptr != '\0') {
-            tmpptr++;
-        }
-
-        size_t size = (size_t)(tmpptr - opts + 1); // длинна аргумента + \0
-        *dataRef = (char*)calloc(size, sizeof(char*));
-
-        Strcpy(*dataRef, opts, tmpptr);
-        dataRef++;
-
-        if (*tmpptr == '\0') {
-            opts = tmpptr;
-        } else {
-            opts = tmpptr + 1;
-        }
-    }
+    ParseArgs(option, opts);
 }
 
 void ParseShort(const char* opts, Option* option) {
@@ -86,15 +84,30 @@ void ParseShort(const char* opts, Option* option) {
     assert(option != NULL);
 
     opts++; // skip -
-    for (; Stop(option); option++) {
+
+    // for (; !Stop(option); option++) {
+    //     if (option->shortName == *opts) {
+    //         option->seen = true;
+    //         break;
+    //     }
+    // }
+    // if (Stop(option)) {
+    //     return;
+    // }
+
+    while (1) {
+        if (Stop(option)) {
+            return;
+        }
+
         if (option->shortName == *opts) {
             option->seen = true;
             break;
         }
+
+        option++;
     }
-    if (Stop(option)) {
-        return;
-    }
+
     opts++; // skip name
 
     if (*opts != '=') {
@@ -102,36 +115,8 @@ void ParseShort(const char* opts, Option* option) {
         option->data = NULL;
         return;
     }
-    opts++; // skip =
-    (option->nArgs)++;
 
-    for (const char* tmpptr = opts; *tmpptr != '\0'; tmpptr++) {
-        if (*tmpptr == ',') {
-            (option->nArgs)++;
-        }
-    }
-
-    (option->data) = (char**)calloc(option->nArgs, sizeof(char**));
-
-    char** dataRef = option->data;
-    while (*opts != '\0') {
-        const char* tmpptr = opts;
-        while (*tmpptr != ',' && *tmpptr != '\0') {
-            tmpptr++;
-        }
-
-        size_t size = (size_t)(tmpptr - opts + 1); // длинна аргумента + \0
-        *dataRef = (char*)calloc(size, sizeof(char*));
-
-        Strcpy(*dataRef, opts, tmpptr);
-        dataRef++;
-
-        if (*tmpptr == '\0') {
-            opts = tmpptr;
-        } else {
-            opts = tmpptr + 1;
-        }
-    }
+    ParseArgs(option, opts);
 }
 
 bool Stop(Option* option) {
@@ -139,7 +124,7 @@ bool Stop(Option* option) {
 
     return (option->longName  == NULL &&
             option->shortName == '\0' &&
-            option->funcPtr   == NULL) ? true : false;
+            option->func      == NULL);
 }
 
 void Strcpy(char* dest,const  char* begin,const char* end) { // копирует строку [begin, end) после чего терменирует \0
@@ -171,5 +156,62 @@ bool IsEql(const char* begin, const char* end, const char* str) { // [begin, end
         return false;
     } else {
         return true;
+    }
+}
+
+void FreeOpt(Option* option) {
+    for (int i = 0; !Stop(option+i); i++) {
+        for (size_t j = 0; j < option[i].nArgs; j++) {
+            free(option[i].data[j]);
+        }
+        free(option[i].data);
+        option[i].data = nullptr;
+    }
+}
+
+void PrintOpt(Option* option) {
+    for (int i = 0; !Stop(option+i); i++) {
+        printf("long name: %s\n",           option[i].longName);
+        printf("short name: %c\n",          option[i].shortName);
+        printf("had been seen: %d\n",       option[i].seen);
+        printf("has number of args: %lu\n", option[i].nArgs);
+        printf("args:\n");
+        for (size_t j = 0; j < option[i].nArgs; j++) {
+            printf("%s ",option[i].data[j]);
+        }
+        printf("\n");
+    }
+}
+
+void ParseArgs(Option* option, const char* pos) {
+    pos++; // skip =
+    (option->nArgs)++;
+
+    for (const char* tmpptr = pos; *tmpptr != '\0'; tmpptr++) {
+        if (*tmpptr == ',') {
+            (option->nArgs)++;
+        }
+    }
+
+    option->data = (char**)calloc(option->nArgs, sizeof(option->data[0]));
+
+    char** dataRef = option->data;
+    while (*pos != '\0') {
+        const char* tmpptr = pos;
+        while (*tmpptr != ',' && *tmpptr != '\0') {
+            tmpptr++;
+        }
+
+        size_t size = (size_t)(tmpptr - pos + 1); // длинна аргумента + \0
+        *dataRef = (char*)calloc(size, sizeof((*dataRef)[0]));
+
+        Strcpy(*dataRef, pos, tmpptr);
+        dataRef++;
+
+        if (*tmpptr == '\0') {
+            break;
+        } else {
+            pos = tmpptr + 1;
+        }
     }
 }
