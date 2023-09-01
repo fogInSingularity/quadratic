@@ -16,7 +16,7 @@
 #define GREEN_B   "\x1b[42m"
 #define YELLOW_B  "\x1b[43m"
 #define BLUE_B    "\x1b[44m"
-#define MAGENTA_B "\x1b[45m"
+#define MAGENTA_B "\x1b[25m"
 #define CYAN_B    "\x1b[46m"
 #define WHITE_B   "\x1b[47m"
 

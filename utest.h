@@ -37,7 +37,7 @@ struct SwapTest {
 
 
 /**
- * @brief tests given SwaoTest
+ * @brief tests given SwapTest
  *
  * @param test struct that hold variables
  *

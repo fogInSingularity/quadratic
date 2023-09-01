@@ -10,9 +10,9 @@
 #include "color.h"
 
 int InputOfCoeff(double* a, double* b, double* c) {
-    assert(a != NULL);
-    assert(b != NULL);
-    assert(c != NULL);
+    assert(a != nullptr);
+    assert(b != nullptr);
+    assert(c != nullptr);
     assert(a != b);
     assert(b != c);
     assert(a != c);

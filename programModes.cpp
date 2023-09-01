@@ -11,7 +11,7 @@
 #include "getopt.h"
 
 void Help(Option* option) {
-    assert(option != NULL);
+    assert(option != nullptr);
 
     printf("This utility that solves quadratic\n"
            "equation based on given coefficients\n\n");
@@ -27,7 +27,7 @@ void Help(Option* option) {
 }
 
 void DefaultStdio(Option* option) {
-    assert(option != NULL);
+    assert(option != nullptr);
 
     double a = NAN;
     double b = NAN;
@@ -43,14 +43,14 @@ void DefaultStdio(Option* option) {
 }
 
 void DefaultCli(Option* option) {
-    assert(option != NULL);
+    assert(option != nullptr);
 
     const int CLI_M = 1;
 
     assert(option[CLI_M].nArgs >= 3); // аргументы кроме первых трёх будут игнорироваться ?
-    assert(option[CLI_M].data[0] != NULL);
-    assert(option[CLI_M].data[1] != NULL);
-    assert(option[CLI_M].data[2] != NULL);
+    assert(option[CLI_M].data[0] != nullptr);
+    assert(option[CLI_M].data[1] != nullptr);
+    assert(option[CLI_M].data[2] != nullptr);
 
     double a = atof(option[CLI_M].data[0]);
     double b = atof(option[CLI_M].data[1]);
@@ -64,7 +64,7 @@ void DefaultCli(Option* option) {
 }
 
 void DefaultFile(Option* option) {
-    assert(option != NULL);
+    assert(option != nullptr);
 
     const int FILE_M = 2;
 
@@ -73,7 +73,7 @@ void DefaultFile(Option* option) {
     const char* fileName = option[FILE_M].data[0];
 
     FILE* file = fopen(fileName, "r");
-    assert(file != NULL);
+    assert(file != nullptr);
 
     double a = NAN;
     double b = NAN;

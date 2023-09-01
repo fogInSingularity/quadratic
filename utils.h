@@ -2,6 +2,10 @@
 #define UTILS_H
 
 
+#include <stddef.h>
+#include <stdio.h>
+
+
 /// @brief calculation error
 const double DELTA = 0.00000001;
 
@@ -12,7 +16,7 @@ const double DELTA = 0.00000001;
  * @param a first number
  * @param b second number
  *
- * @return if a == b: true else: false
+ * @return if a == b: true else: false (if two nambers is NAN it will return false)
 */
 bool IsEql(double a, double b);
 
@@ -25,7 +29,7 @@ bool IsEql(double a, double b);
  *
  * @return if a == b: true else: false
 */
-bool IsEql(const char a[],const char b[]);
+bool IsEql(const char* a,const char* b);
 
 
 /**
@@ -33,7 +37,7 @@ bool IsEql(const char a[],const char b[]);
  *
  * @param n number to check
  *
- * @return if n == 0: true else: false
+ * @return if n == 0: true else: false (nan returns false)
 */
 bool IsZero(double n);
 

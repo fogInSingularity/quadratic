@@ -3,11 +3,10 @@ EXE = quadratic
 BUILD_DIR = build
 SOURCES = $(wildcard *.cpp)
 OBJECTS = $(foreach src,$(SOURCES),./$(BUILD_DIR)/$(src:.cpp=.o))
-DEPS = $(foreach src,$(wildcard *.h),./$(BUILD_DIR)/$(src:.h=.d))
+DEPS = $(wildcard $(BUILD_DIR)/*.d)
 OPT_LEVEL = -O0
 DEFINES = NOTHING
-DOPFLAGS = -MMD -MP
-FLAGS = -ggdb3 -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
+FLAGS = -MMD -MP -ggdb3 -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
 		-Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual \
 		-Wchar-subscripts -Wconditionally-supported -Wconversion -Wctor-dtor-privacy \
 		-Wempty-body -Wfloat-equal -Wformat-nonliteral -Wformat-security \
@@ -30,15 +29,15 @@ FLAGS = -ggdb3 -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations
 all: $(EXE)
 
 $(EXE): $(OBJECTS)
-	$(CC) $(OBJECTS) $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) -o $(EXE)
+	@$(CC) $(OBJECTS) $(FLAGS) -o $(EXE)
 
-./$(BUILD_DIR)/%.o: %.cpp
-	$(CC) $^ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) -o $@
+$(BUILD_DIR)/%.o: %.cpp
+	@$(CC) $^ -c $(OPT_LEVEL) $(FLAGS) -D $(DEFINES) -o $@
 
 clean:
-	rm $(BUILD_DIR)/*
+	@rm $(BUILD_DIR)/*
 
 doxygen:
-	doxygen Doxyfile
+	@doxygen Doxyfile
 
 # -include $(DEPS)

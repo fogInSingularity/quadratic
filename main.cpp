@@ -19,20 +19,21 @@ enum OptinonsMap {
     STDIN_M = 3, ///< use stdin as input source
 };
 
-int main(int argc,const char**  argv) {
-#ifdef _DEBUG
+int main(int argc,const char** argv) {
+#ifdef _TEST
     TestAllSquareS();
     TestAllSwap();
+
 #else
-    Option optArr[] = {{"help"        , 'h' , &Help        , false, 0, NULL},
-                       {"command-line", 'c' , &DefaultCli  , false, 0, NULL},
-                       {"file"        , 'f' , &DefaultFile , false, 0, NULL},
-                       {"stdin"       , 's' , &DefaultStdio, false, 0, NULL},
-                       {NULL          , '\0', NULL         , false, 0, NULL}}; // stop option
+    Option optArr[] = {{"help"        , 'h' , &Help        , false, 0, nullptr},
+                       {"command-line", 'c' , &DefaultCli  , false, 0, nullptr},
+                       {"file"        , 'f' , &DefaultFile , false, 0, nullptr},
+                       {"stdin"       , 's' , &DefaultStdio, false, 0, nullptr},
+                       {nullptr       , '\0', nullptr      , false, 0, nullptr}}; // stop option
 
     Getopt(argc, argv, optArr);
 
-    void (*funcToExec)(Option*) = NULL;
+    void (*funcToExec)(Option*) = &DefaultStdio;
 
     if (optArr[HELP_M].seen) {
         funcToExec = optArr[HELP_M].func;
@@ -44,7 +45,7 @@ int main(int argc,const char**  argv) {
         funcToExec = optArr[FILE_M].func;
     }
 
-    if (funcToExec != NULL) {
+    if (funcToExec != nullptr) {
         (*funcToExec)(optArr);
     } else {
         printf("use ./quadratic --help\n");

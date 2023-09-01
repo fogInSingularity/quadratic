@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
+#include <assert.h>
 
 #include "utils.h"
 #include "squareSolver.h"
@@ -10,6 +11,8 @@
 #include "color.h"
 
 bool TestOneSquareS(const SquareSTest* test) {
+    assert(test != nullptr);
+
     double x1 = NAN;
     double x2 = NAN;
 
@@ -29,7 +32,7 @@ bool TestOneSquareS(const SquareSTest* test) {
         flag |= 0b100;
     }
 
-    if (IsEql(x2, test->x2ref) != 1 || isnan(x2) != isnan(test->x2ref)) {
+    if (IsEql(x2, test->x2ref) != true || isnan(x2) != isnan(test->x2ref)) {
         flag |= 0b010;
     }
 
@@ -63,7 +66,7 @@ void TestAllSquareS() {
     const char* fileName = "tests.txt";
     FILE* file = NULL;
     file = fopen(fileName, "r");
-    assert(file);
+    assert(file != nullptr);
 
     FDropBuf(file);
 
@@ -80,6 +83,8 @@ void TestAllSquareS() {
 }
 
 bool TestOneSwap(const SwapTest* test) {
+    assert(test != nullptr);
+
     char str1[101] = "";
     char str2[101] = "";
     char str1ref[101] = "";

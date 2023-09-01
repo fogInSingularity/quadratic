@@ -7,16 +7,13 @@
 #include "utils.h"
 
 bool IsEql(double a, double b) {
-    if (isnan(a) == 1 && isnan(b) == 1) {
-        return true;
-    } else if (isnan(a) + isnan(b) == 1) {
-        return false;
-    } else {
-        return abs(a - b) < DELTA;
-    }
+    return abs(a - b) < DELTA;
 }
 
-bool IsEql(const char a[],const char b[]) {
+bool IsEql(const char* a,const char* b) {
+    assert(a != nullptr);
+    assert(b != nullptr);
+
     const char* aMove = a;
     const char* bMove = b;
     while (*aMove != '\0' || *bMove != '\0') {
@@ -34,11 +31,7 @@ bool IsEql(const char a[],const char b[]) {
 }
 
 bool IsZero(double n) {
-    if (isnan(n)) {
-        return false;
-    } else {
-        return abs(n) < DELTA;
-    }
+    return abs(n) < DELTA;
 }
 
 bool IsFinite(double n) {
@@ -46,12 +39,12 @@ bool IsFinite(double n) {
 }
 
 void SwapBytes(void* a, void* b, size_t size) {
+    assert(a != nullptr);
+    assert(b != nullptr);
     assert(a != b);
-    assert(a != NULL);
-    assert(b != NULL);
 
     size_t nFullOps = size >> 3; // колво шагов по 8
-    int trailer = size & 0b111; // оставшиеся 7 байт
+    size_t trailer = size & 0b111; // оставшиеся 7 байт
 
     uint8_t* aMove = (uint8_t*)a;
     uint8_t* bMove = (uint8_t*)b;
@@ -95,7 +88,8 @@ void DropBuf() {
 }
 
 void FDropBuf(FILE* file) {
-    assert(file != NULL);
+    assert(file != nullptr);
+
     int ch = 0;
 
     while ((ch = fgetc(file)) != '\n' && ch != EOF) {}

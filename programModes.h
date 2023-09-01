@@ -15,9 +15,15 @@ void Help(Option* option);
 void DefaultStdio(Option* option);
 
 
+/**
+ * @brief cli mode to solve equation
+*/
 void DefaultCli(Option* option);
 
 
+/**
+ * @brief file mode to solve equation
+*/
 void DefaultFile(Option* option);
 
 

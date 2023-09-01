@@ -7,6 +7,9 @@
 #include "utils.h"
 
 void Getopt(int argc, const char** argv, Option* options) {
+    assert(argv != nullptr);
+    assert(options != nullptr);
+
     for (; argc > 0; argc--, argv++) {
         const char* opts = *argv;
         if (strlen(opts)  < 2 || opts[0] != '-') {
@@ -25,19 +28,18 @@ void Getopt(int argc, const char** argv, Option* options) {
 }
 
 void ParseLong(const char* opts, Option* option) {
-    assert(opts   != NULL);
-    assert(option != NULL);
+    assert(opts   != nullptr);
+    assert(option != nullptr);
 
     opts += 2; // skip --
 
-    // const char* beginOpt = opts;
     const char* endOpt = strchr(opts, '=');
 
     while (1) {
         if (Stop(option)) {
             return;
         }
-                                            // (size_t)(endOpt - beginOpt)
+
         if (strncmp(opts, option->longName, strlen(option->longName)) == 0) {
             option->seen = true;
             break;
@@ -53,12 +55,12 @@ void ParseLong(const char* opts, Option* option) {
 
     opts = endOpt;
 
-    ParseArgs(option, opts);
+    ParseArgs(opts, option);
 }
 
 void ParseShort(const char* opts, Option* option) {
-    assert(opts   != NULL);
-    assert(option != NULL);
+    assert(opts   != nullptr);
+    assert(option != nullptr);
 
     opts++; // skip -
 
@@ -83,74 +85,13 @@ void ParseShort(const char* opts, Option* option) {
         return;
     }
 
-    ParseArgs(option, opts);
+    ParseArgs(opts, option);
 }
 
-bool Stop(Option* option) {
-    assert(option != NULL);
+void ParseArgs(const char* pos, Option* option) { //  передавать указатель на =
+    assert(pos != nullptr);
+    assert(option != nullptr);
 
-    return (option->longName  == NULL &&
-            option->shortName == '\0' &&
-            option->func      == NULL);
-}
-
-void Strcpy(char* dest,const  char* begin,const char* end) { // копирует строку [begin, end) после чего терменирует \0
-    assert(dest  != NULL);
-    assert(begin != NULL);
-    assert(end   != NULL);
-
-    while (begin != end) {
-        *dest = *begin;
-        dest++;
-        begin++;
-    }
-    *dest = '\0';
-}
-
-// bool IsEql(const char* begin, const char* end, const char* str) { // [begin, end)
-//     assert(begin != NULL);
-//     assert(end   != NULL);
-//     assert(str   != NULL);
-
-//     while (begin != end) {
-//         if (*begin != *str) {
-//             return false;
-//         }
-//         str++;
-//         begin++;
-//     }
-//     if (*str != '\0') {
-//         return false;
-//     } else {
-//         return true;
-//     }
-// }
-
-void FreeOpt(Option* option) {
-    for (int i = 0; !Stop(option+i); i++) {
-        for (size_t j = 0; j < option[i].nArgs; j++) {
-            free(option[i].data[j]);
-        }
-        free(option[i].data);
-        option[i].data = nullptr;
-    }
-}
-
-void PrintOpt(Option* option) {
-    for (int i = 0; !Stop(option+i); i++) {
-        printf("long name: %s\n",           option[i].longName);
-        printf("short name: %c\n",          option[i].shortName);
-        printf("had been seen: %d\n",       option[i].seen);
-        printf("has number of args: %lu\n", option[i].nArgs);
-        printf("args:\n");
-        for (size_t j = 0; j < option[i].nArgs; j++) {
-            printf("%s ",option[i].data[j]);
-        }
-        printf("\n");
-    }
-}
-
-void ParseArgs(Option* option, const char* pos) { //  передавать указатель на =
     pos++; // skip =
     (option->nArgs)++;
 
@@ -166,11 +107,6 @@ void ParseArgs(Option* option, const char* pos) { //  передавать ук�
     const char* term = strchr(pos, '\0');
 
     while (*pos != '\0') {
-        // const char* tmpptr = pos;
-        // while (*tmpptr != ',' && *tmpptr != '\0') {
-        //     tmpptr++;
-        // }
-
         const char* comma = strchr(pos, ',');
 
         const char* jump = (comma != NULL) ? comma : term;
@@ -186,5 +122,57 @@ void ParseArgs(Option* option, const char* pos) { //  передавать ук�
         } else {
             pos = jump + 1;
         }
+    }
+}
+
+bool Stop(Option* option) {
+    assert(option != nullptr);
+
+    assert(option != NULL);
+
+    return (option->longName  == NULL &&
+            option->shortName == '\0' &&
+            option->func      == NULL);
+}
+
+void Strcpy(char* dest,const  char* begin,const char* end) { // копирует строку [begin, end) после чего терменирует \0
+    assert(dest != nullptr);
+    assert(begin != nullptr);
+    assert(end != nullptr);
+
+    while (begin != end) {
+        *dest = *begin;
+        dest++;
+        begin++;
+    }
+    *dest = '\0';
+}
+
+void FreeOpt(Option* option) {
+    assert(option != nullptr);
+
+    for (int i = 0; !Stop(option+i); i++) {
+        for (size_t j = 0; j < option[i].nArgs; j++) {
+            free(option[i].data[j]);
+        }
+        free(option[i].data);
+        option[i].data = nullptr;
+    }
+}
+
+void PrintOpt(Option* option) {
+    assert(option != nullptr);
+
+    for (int i = 0; !Stop(option+i); i++) {
+        printf("long name: %s\n",           option[i].longName);
+        printf("short name: %c\n",          option[i].shortName);
+        printf("had been seen: %d\n",       option[i].seen);
+        printf("has number of args: %lu\n", option[i].nArgs);
+        printf("args:\n");
+
+        for (size_t j = 0; j < option[i].nArgs; j++) {
+            printf("%s ",option[i].data[j]);
+        }
+        printf("\n");
     }
 }
