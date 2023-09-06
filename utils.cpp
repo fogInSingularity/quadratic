@@ -48,8 +48,10 @@ void SwapBytes(void* a, void* b, size_t size) {
 
     uint8_t* aMove = (uint8_t*)a;
     uint8_t* bMove = (uint8_t*)b;
+
+    uint64_t temp = 0;
+
     for (size_t i = 0; i < nFullOps; i++) {
-        uint64_t temp = 0;
         memcpy(&temp, aMove, sizeof(uint64_t));
                memcpy(aMove, bMove, sizeof(uint64_t));
                       memcpy(bMove, &temp, sizeof(uint64_t));
@@ -58,7 +60,6 @@ void SwapBytes(void* a, void* b, size_t size) {
     }
 
     if (trailer & 0b100) {
-        uint32_t temp = 0;
         memcpy(&temp, aMove, sizeof(uint32_t));
                memcpy(aMove, bMove, sizeof(uint32_t));
                       memcpy(bMove, &temp, sizeof(uint32_t));
@@ -66,7 +67,6 @@ void SwapBytes(void* a, void* b, size_t size) {
         bMove += sizeof(uint32_t);
     }
     if (trailer & 0b010) {
-        uint16_t temp = 0;
         memcpy(&temp, aMove, sizeof(uint16_t));
                memcpy(aMove, bMove, sizeof(uint16_t));
                       memcpy(bMove, &temp, sizeof(uint16_t));
@@ -74,7 +74,6 @@ void SwapBytes(void* a, void* b, size_t size) {
         bMove += sizeof(uint16_t);
     }
     if (trailer & 0b001) {
-        uint8_t temp = 0;
         memcpy(&temp, aMove, sizeof(uint8_t));
                memcpy(aMove, bMove, sizeof(uint8_t));
                       memcpy(bMove, &temp, sizeof(uint8_t));
@@ -110,5 +109,5 @@ int IgnoreSpaces() {
 }
 
 bool IsSpace(const char ch) {
-    return ch == ' ' ? true : false;
+    return ch == ' ';
 }

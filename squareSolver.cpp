@@ -44,12 +44,7 @@ NRoots SquareSolver(double a, double b, double c, double* x1, double* x2) {
 
             return NRoots::ONE;
         } else if (d > 0.0) {
-            double d_sqrt = NAN;
-            if (IsZero(c)) {
-                d_sqrt = b;
-            } else {
-                d_sqrt = sqrt(d);
-            }
+            double d_sqrt = IsZero(c) ? b : sqrt(d);
 
             *x1 = (-b - d_sqrt) / (2.0 * a);
             *x1 = IsZero(*x1) ? 0.0 : (*x1);

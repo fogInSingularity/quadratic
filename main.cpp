@@ -19,7 +19,7 @@ enum OptinonsMap {
     STDIN_M = 3, ///< use stdin as input source
 };
 
-int main(int argc,const char** argv) {
+int main(const int argc, const char** argv) {
 #ifdef _TEST
     TestAllSquareS();
     TestAllSwap();
@@ -33,7 +33,7 @@ int main(int argc,const char** argv) {
 
     Getopt(argc, argv, optArr);
 
-    void (*funcToExec)(Option*) = &DefaultStdio;
+    int (*funcToExec)(Option*) = &DefaultStdio;
 
     if (optArr[HELP_M].seen) {
         funcToExec = optArr[HELP_M].func;
@@ -46,7 +46,23 @@ int main(int argc,const char** argv) {
     }
 
     if (funcToExec != nullptr) {
-        (*funcToExec)(optArr);
+        int state = (*funcToExec)(optArr);
+        if (state != 0) {
+            switch (state) {
+                case CLI_ERROR:
+                    printf("args to cli were given incorrectly");
+                    break;
+                case FILE_ERROR_CANT_OPEN:
+                    printf("cant open %s\nfile corrupted or dosnt exist\n", optArr[FILE_M].data[0]);
+                    break;
+                case FILE_ERROR_WRONG_DATA:
+                    printf("data from file inccorrect\n");
+                    break;
+                default:
+                    assert(0 && "switch case error");
+                    break;
+            }
+        }
     } else {
         printf("use ./quadratic --help\n");
     }

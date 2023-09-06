@@ -1,15 +1,13 @@
 #ifndef GETOPT_H
 #define GETOPT_H
 
-
 #include <stddef.h>
-
 
 /// @brief holds options data
 struct Option {
     const char* longName;         ///< long option without --
     char shortName;               ///< short option without -
-    void (*func) (Option* option);///< option func
+    int (*func) (Option* option);///< option func
     bool seen;                    ///< is option had been seen in given options (should be init with false)
     size_t nArgs;                 ///< how many args had been given (should be init with 0)
     char** data;                  ///< holds array of strings (should be init with nullptr)

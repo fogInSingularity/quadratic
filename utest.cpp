@@ -64,7 +64,7 @@ bool TestOneSquareS(const SquareSTest* test) {
 
 void TestAllSquareS() {
     const char* fileName = "tests.txt";
-    FILE* file = NULL;
+    FILE* file = nullptr;
     file = fopen(fileName, "r");
     assert(file != nullptr);
 

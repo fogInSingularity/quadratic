@@ -29,6 +29,7 @@ bool TestOneSquareS(const SquareSTest* test);
 */
 void TestAllSquareS();
 
+
 /// @brief definition of struct that holds all programmer entered variables for swap test
 struct SwapTest {
     const char* str1;
