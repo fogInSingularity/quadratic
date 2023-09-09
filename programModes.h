@@ -5,9 +5,9 @@
 
 
 enum ProgramState{
-    SUCCESS = 0,
-    CLI_ERROR = 1,
-    FILE_ERROR_CANT_OPEN = 2,
+    SUCCESS               = 0,
+    CLI_ERROR             = 1,
+    FILE_ERROR_CANT_OPEN  = 2,
     FILE_ERROR_WRONG_DATA = 3,
 };
 
