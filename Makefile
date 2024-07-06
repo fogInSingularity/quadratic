@@ -40,4 +40,7 @@ clean:
 doxygen:
 	@doxygen Doxyfile
 
+release:
+	@$(CC) $(SOURCES) -O2 -o quadratic
+
 # -include $(DEPS)
